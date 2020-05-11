@@ -1,5 +1,6 @@
 <template>
   <div id="manhattanMap">
+    <h3>Events that Bill covered</h3>
     <svg height="100%" width="100%" :viewBox="`0 0 ${svgWidth} ${svgHeight}`">
       <g id="map">
         <path
@@ -56,7 +57,7 @@
 
 <script>
 import * as d3 from "d3";
-import manhattanGeojson from "../../public/manhattan.js";
+import manhattanGeojson from "./data/manhattan.js";
 
 const excludedNeighborhoods = new Set([
   "Washington Heights",

@@ -1,0 +1,50 @@
+* {
+  --purple-rgb: 124, 104, 238;
+  --purple-hue: 249;
+
+  --blue-rgb: 0, 191, 255;
+  --blue-hue: 195;
+
+  --orange-rgb: 255, 128, 82;
+  --orange-hue: 16;
+
+  --green-rgb: 60, 180, 114;
+  --green-hue: 147;
+
+  --red-rgb: 255, 20, 146;
+  --red-hue: 328;
+
+  --yellow-rgb: 255, 215, 0;
+  --yellow-hue: 51;
+}
+
+.purple {
+  --rgb: 124, 104, 238;
+  --hue: 249;
+  --color: rgb(124, 104, 238);
+}
+.blue {
+  --rgb: 0, 191, 255;
+  --hue: 195;
+  --color: rgb(0, 191, 255);
+}
+.orange {
+  --rgb: 255, 128, 82;
+  --hue: 16;
+  --color: rgb(255, 128, 82);
+}
+.green {
+  --rgb: 60, 180, 114;
+  --hue: 147;
+  --color: rgb(60, 180, 114);
+}
+.red {
+  --rgb: 255, 20, 146;
+  --hue: 328;
+  --color: rgb(255, 20, 146);
+}
+.yellow {
+  --rgb: 255, 215, 0;
+  --hue: 51;
+  --color: rgb(255, 215, 0);
+}
