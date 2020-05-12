@@ -76,7 +76,7 @@
 <script>
 import tags from "./json/tags.json";
 import Vue from "vue";
-const rotationOffset = 20;
+const rotationOffset = 30;
 
 const Component = Vue.extend({
   props: ["currentScreen", "scrollPosition", "screenHeight"],
@@ -117,7 +117,7 @@ const Component = Vue.extend({
   data() {
     let tagList = Object.values(tags)
       .sort((a, b) => (a.works.length - b.works.length) * 1000)
-      .filter(w => w.works.length > 1);
+      .filter(w => w.works.length >= 1);
     tagList = tagList.map((w, i) => {
       w.rotationAngle = (-360 * (i + 1)) / tagList.length - rotationOffset;
       w.rectX = -w.works.length;
@@ -197,7 +197,7 @@ rect {
 }
 
 text.label {
-  font-size: 1.5px;
+  font-size: 1px;
   &:hover {
     fill: green;
   }
