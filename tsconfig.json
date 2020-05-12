@@ -10,9 +10,9 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
+    // "noImplicitAny": true,
+    // "noImplicitThis": true,
+    // "noImplicitReturns": true,
     "baseUrl": ".",
     "types": ["webpack-env"],
     "paths": {

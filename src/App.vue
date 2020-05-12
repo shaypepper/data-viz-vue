@@ -7,7 +7,7 @@
 
 <script>
 // import ExploratoryProject from "./components/ExploratoryProject";
-import ExplanatoryProject from "./components/ExplanatoryProject";
+import ExplanatoryProject from "./components/ExplanatoryProject/Scroller";
 import Vue from "vue";
 const Component = Vue.extend({
   name: "App",

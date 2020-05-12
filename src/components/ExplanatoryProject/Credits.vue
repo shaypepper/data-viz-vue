@@ -60,7 +60,7 @@ import { Fragment } from "vue-fragment";
 import MediaSvg from "./MediaSVG.vue";
 import credits from "./json/credits.json";
 import works from "./json/works_by_url.json";
-const GRID_SIZE = 10;
+const GRID_SIZE = 30;
 const Component = Vue.extend({
   components: {
     MediaSvg,
@@ -107,7 +107,7 @@ export default Component;
 
 <style lang="scss" scoped>
 @import "../../assets/css/color-scheme.scss";
-$grid-size: 10;
+$grid-size: 30;
 
 h3 {
   font-family: nyt-franklin;

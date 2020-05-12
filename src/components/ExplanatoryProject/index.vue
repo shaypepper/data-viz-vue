@@ -1,38 +1,40 @@
 <template>
   <div id="masterContainer">
-    <div id="navbar">
-      <button class="left" @click="handleBackClick">
-        <svg viewBox="0 0 100 225" height="42px">
-          <path
-            d="m88,16 l-80,96 l80,96"
-            fill="transparent"
-            stroke="black"
-            stroke-width="16"
-          />
-        </svg>
-      </button>
-      <button class="right" @click="handleNextClick">
-        <svg viewBox="0 0 100 225" height="42px">
-          <path
-            d="m8,16 l80,96 l-80,96"
-            fill="transparent"
-            stroke="black"
-            stroke-width="16"
-          />
-        </svg>
-      </button>
-      <h1>What I've learned from TheUpshot</h1>
-    </div>
+    <fragment>
+      <div id="navbar">
+        <button class="left" @click="handleBackClick">
+          <svg viewBox="0 0 100 225" height="42px">
+            <path d="m88,16 l-80,96 l80,96" fill="transparent" stroke="black" stroke-width="16" />
+          </svg>
+        </button>
+        <button class="right" @click="handleNextClick">
+          <svg viewBox="0 0 100 225" height="42px">
+            <path d="m8,16 l80,96 l-80,96" fill="transparent" stroke="black" stroke-width="16" />
+          </svg>
+        </button>
+        <h1>What I've learned from TheUpshot</h1>
+      </div>
 
-    <tags currentScreen="" />
-    <credits />
-    <waffle />
+      <section class="spacer">Content</section>
+      <div id="pinMaster">
+        <div id="pinContainer">
+          <section class="panel dark">Pin Panel A</section>
+          <section class="panel turqoise">Pin Panel B</section>
+          <section class="panel bordeaux">Pin Panel C</section>
+        </div>
+        <section class="spacer">Content</section>
+        <footer>Footer</footer>
+      </div>
+      <tags />
+      <credits />
+      <waffle />
+    </fragment>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
-import Waffle from "./Waffle.vue";
+import Waffle from "./Waffle";
 import Credits from "./Credits.vue";
 import Tags from "./Tags.vue";
 
@@ -40,12 +42,15 @@ const Component = Vue.extend({
   components: {
     Credits,
     Tags,
-    Waffle,
+    Waffle
+  },
+  mounted() {
+    document.addEventListener("backbutton", this.handleBackClick, false);
   },
   data() {
     return {
       screenOrder: ["tags", "credits", "waffle"],
-      currentScreen: 0,
+      currentScreen: 0
     };
   },
   methods: {
@@ -62,20 +67,18 @@ const Component = Vue.extend({
       if (masterContainer) {
         masterContainer.scrollLeft -= vwidth;
       }
-    },
-  },
-  mounted() {
-    document.addEventListener("backbutton", this.handleBackClick, false);
+    }
   },
   beforeDestroy() {
     document.removeEventListener("backbutton", this.handleBackClick);
-  },
+  }
 });
 
 export default Component;
 </script>
 
 <style lang="scss">
+@import "../../assets/css/color-scheme.scss";
 * {
   --outermost-horizontal-padding: 60px;
 }

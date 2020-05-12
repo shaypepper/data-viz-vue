@@ -3,23 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host localhost",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/scrollmagic": "^2.0.0",
     "core-js": "^3.6.4",
     "d3": "^5.15.1",
     "d3-brush": "^1.1.5",
     "d3-dsv": "^1.2.0",
     "debounce": "^1.2.0",
     "gsap": "^3.2.6",
+    "magic-scroll": "0.0.12",
     "node-sass": "^4.14.0",
     "sass-loader": "^8.0.2",
+    "scrollmagic": "^2.0.7",
     "vue": "^2.6.11",
     "vue-csv-import": "^3.1.0",
     "vue-debounce": "^2.5.3",
-    "vue-fragment": "^1.5.1"
+    "vue-fragment": "^1.5.1",
+    "vue-scrollmagic": "^1.2.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.18.0",
