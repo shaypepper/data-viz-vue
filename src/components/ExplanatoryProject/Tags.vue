@@ -1,8 +1,8 @@
 <template>
-  <div id="tagsScreen" :class="`shaysClass ${currentScreen ? 'currentScreen' : ''}`">
-    <div id="chartWrapper" :class="activeScrolling ? 'fixed' : ''">
+  <div id="tagsScreen" class="shaysClass pin-target">
+    <div id="chartWrapper">
       <svg viewBox="20 -90 100 200" id="radialChart">
-        <g :transform="`rotate(${chartRotation})`">
+        <g id="chartGroup" :style="`--chart-rotation: ${chartRotation}deg;`">
           <g stroke="white" fill="transparent" stroke-width="0.02">
             <circle r="40" />
             <circle r="50" />
@@ -10,14 +10,12 @@
           </g>
 
           <g
-            v-for="tag in tags"
+            v-for="(tag, i) in tags"
             :key="tag.uri"
             :data-uri="tag.uri"
-            :transform="`rotate(${tag.rotationAngle}) translate(70 0)`"
-            :opacity="
-              !highlightedBarUrl || highlightedBarUrl === tag.uri ? 1 : 0.4
-            "
-            fill="white"
+            :data-index="i"
+            :style="`--rotation-angle: ${tag.rotationAngle}deg`"
+            :class="`tag ${highlightedBarUrl == tag.uri? 'highlighted' : ''}`"
           >
             <rect
               :class="`bar ${tag.__typename}`"
@@ -28,7 +26,7 @@
             />
 
             <text
-              v-if="highlightedBarUrl === tag.uri"
+              v-if="highlightedBarUrl ===  tag.uri"
               height="2"
               width="2"
               y="1.3"
@@ -36,16 +34,9 @@
               style="font-size:2"
             >{{ tag.works.length }}</text>
 
-            <g
-              :transform="
-                `${
-                  highlightedBarUrl === tag.uri
-                    ? 'translate(-1.1 -0.7) scale(1.5)'
-                    : ''
-                }`
-              "
-            >
-              <text y="1.5" x="3" class="label">{{ tag.displayName }}</text>
+            <g class="label">
+              <text y="-1" x="3">The Upshot wrote {{tag.works.length}} stories about</text>
+              <text y="1.5" x="3">{{ tag.displayName }}</text>
             </g>
           </g>
         </g>
@@ -69,24 +60,17 @@
         </g>
       </svg>
     </div>
-    <!-- <div style="height: 100vh"></div> -->
   </div>
 </template>
 
 <script>
 import tags from "./json/tags.json";
 import Vue from "vue";
-const rotationOffset = 30;
+const rotationOffset = 50;
 
 const Component = Vue.extend({
-  props: ["currentScreen", "scrollPosition", "screenHeight"],
+  props: ["currentScreen", "scrollPosition", "tagsSection"],
   mounted() {
-    const observer = new IntersectionObserver(() => {
-      // console.log("yo");
-    });
-    const screen = document.getElementById("tagsScreen");
-    observer.observe(screen);
-
     this.chartRotation =
       -rotationOffset - this.tags[this.tags.length - 1].rotationAngle;
 
@@ -98,20 +82,16 @@ const Component = Vue.extend({
         this.yOffset = window.scrollY;
       }
 
+      console.log(this.tagsSection.clientHeight);
+
       const relativeScrollPosition = window.scrollY - this.yOffset;
-      const unit = this.screenHeight / this.tags.length;
+      const unit =
+        (this.tagsSection || this.$el).clientHeight / this.tags.length;
       let newIndex =
         this.tags.length - 1 - Math.floor(relativeScrollPosition / unit);
       newIndex = Math.max(0, newIndex);
       newIndex = Math.min(this.tags.length - 1, newIndex);
-      console.log(
-        relativeScrollPosition,
-        unit,
-        this.highlightedBarUrl,
-        newIndex
-      );
-      this.highlightedBarUrl = this.tags[newIndex].uri;
-      this.chartRotation = -rotationOffset - this.tags[newIndex].rotationAngle;
+      this.setHighlightedBar(this.tags[newIndex].uri, newIndex);
     });
   },
   data() {
@@ -121,6 +101,7 @@ const Component = Vue.extend({
     tagList = tagList.map((w, i) => {
       w.rotationAngle = (-360 * (i + 1)) / tagList.length - rotationOffset;
       w.rectX = -w.works.length;
+      w.index = i;
       return w;
     });
     return {
@@ -138,6 +119,13 @@ const Component = Vue.extend({
       activeScrolling: true,
       yOffset: 0
     };
+  },
+  methods: {
+    setHighlightedBar(uri, index) {
+      this.highlightedBarUrl = uri;
+      this.chartRotation = -rotationOffset - this.tags[index].rotationAngle;
+      this.chartRotation = -rotationOffset - this.tags[index - 1].rotationAngle;
+    }
   }
 });
 
@@ -148,29 +136,38 @@ export default Component;
 @import "../../assets/css/color-scheme.scss";
 $unit: 0.4vmax;
 
-.fixed {
-  // position: fixed;
+#spacer {
+  height: 75px;
+  background-color: white;
+  margin-bottom: 5px;
+}
+
+#tagsScreen {
+  display: flex;
+  flex-direction: column;
+}
+
+#chartGroup {
+  transform: rotate(var(--chart-rotation));
+}
+
+#chartWrapper {
+  position: relative;
+  top: 0;
 }
 
 div.shaysClass {
   margin: 0;
-  // padding: 60px 0 0;
   background-color: transparent;
   overflow: visible;
 
+  svg {
+    max-width: 70%;
+  }
   div.box {
     pointer-events: none;
   }
   color: hsl(51, 100%, 40);
-}
-
-#chartWrapper {
-  height: 100vh;
-  width: 100%;
-}
-
-#radialChart {
-  height: 250vh;
 }
 
 rect {
@@ -196,10 +193,39 @@ rect {
   }
 }
 
-text.label {
-  font-size: 1px;
-  &:hover {
-    fill: green;
+.tag {
+  transition: transform 400ms ease;
+  transition-delay: 50ms;
+  transform: rotate(var(--rotation-angle)) translate(70px, 0px);
+  fill: white;
+  opacity: 0.4;
+  &.highlighted {
+    opacity: 1;
+    // transform: rotate(0deg) scale(1.5) translate(0px, 0px);
+    .label {
+      transform: rotate(50deg) scale(1.5) translate(-8px, -20.5px);
+      text:first-of-type {
+        font-size: 1px;
+        opacity: 1;
+      }
+      text:last-of-type {
+        font-size: 2px;
+        font-style: italic;
+      }
+    }
+  }
+  .label {
+    font-size: 1px;
+    transition: transform 400ms ease 400ms;
+    // transition-delay: 400ms;
+    text:first-of-type {
+      transition: opacity 400ms ease;
+      transition-delay: 600ms;
+      opacity: 0;
+    }
+  }
+  .tagName {
+    font-size: 2;
   }
 }
 </style>

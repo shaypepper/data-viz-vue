@@ -78,7 +78,7 @@ export default Component;
 </script>
 
 <style lang="scss">
-@import "../../assets/css/color-scheme.scss";
+// @import "../../assets/css/color-scheme.scss";
 * {
   --outermost-horizontal-padding: 60px;
 }
