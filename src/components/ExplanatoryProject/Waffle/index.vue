@@ -257,12 +257,12 @@ export default {
 }
 
 .squares > g {
-  transition: transform 400ms ease;
+  transition: transform 1000ms ease;
 }
 
 .square {
   fill: rgba(var(--rgb), 0.8);
-  transition: fill 400ms ease;
+  transition: fill 1000ms ease;
   // fill: rgba(250, 250, 250, 0.7);
 }
 
