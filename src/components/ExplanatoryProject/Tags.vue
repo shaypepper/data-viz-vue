@@ -1,7 +1,7 @@
 <template>
   <div id="tagsScreen" class="shaysClass pin-target">
     <div id="chartWrapper">
-      <svg viewBox="20 -90 100 200" id="radialChart">
+      <svg viewBox="20 -90 100 180" id="radialChart">
         <g id="chartGroup" :style="`--chart-rotation: ${chartRotation}deg;`">
           <g stroke="white" fill="transparent" stroke-width="0.02">
             <circle r="40" />
@@ -35,7 +35,10 @@
             >{{ tag.works.length }}</text>
 
             <g class="label">
-              <text y="-1" x="3">The Upshot wrote {{tag.works.length}} stories about</text>
+              <text
+                y="-1"
+                x="3"
+              >The Upshot wrote {{tag.prettyLength}} {{tag.works.length > 1 ? 'stories': 'story'}} about</text>
               <text y="1.5" x="3">{{ tag.displayName }}</text>
             </g>
           </g>
@@ -82,8 +85,6 @@ const Component = Vue.extend({
         this.yOffset = window.scrollY;
       }
 
-      console.log(this.tagsSection.clientHeight);
-
       const relativeScrollPosition = window.scrollY - this.yOffset;
       const unit =
         (this.tagsSection || this.$el).clientHeight / this.tags.length;
@@ -102,6 +103,7 @@ const Component = Vue.extend({
       w.rotationAngle = (-360 * (i + 1)) / tagList.length - rotationOffset;
       w.rectX = -w.works.length;
       w.index = i;
+      w.prettyLength = getPrettyNumber(w.works.length);
       return w;
     });
     return {
@@ -130,6 +132,45 @@ const Component = Vue.extend({
 });
 
 export default Component;
+
+export function getPrettyNumber(n) {
+  if (n > 25) {
+    return n;
+  }
+
+  let ones = n % 10;
+  let tens = n - ones;
+
+  let strings = {
+    0: "zero",
+    1: "one",
+    2: "two",
+    3: "three",
+    4: "four",
+    5: "five",
+    6: "six",
+    7: "seven",
+    8: "eight",
+    9: "nine",
+    10: "ten",
+    11: "eleven",
+    12: "twelve",
+    13: "thirteen",
+    14: "fourteen",
+    15: "fifteen",
+    20: "twenty"
+  };
+
+  if (n < 10) return strings[n];
+
+  if (n >= 20) {
+    return strings[tens] + (ones ? "-" + strings[ones] : "");
+  }
+  if (n > 15) {
+    return strings[ones] + "teen";
+  }
+  return strings[n];
+}
 </script>
 
 <style scoped lang="scss">
@@ -154,6 +195,7 @@ $unit: 0.4vmax;
 #chartWrapper {
   position: relative;
   top: 0;
+  height: 100vh;
 }
 
 div.shaysClass {
