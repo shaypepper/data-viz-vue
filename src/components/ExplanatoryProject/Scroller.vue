@@ -122,7 +122,6 @@ main {
 .spacer {
   height: calc(120vh);
   width: 100%;
-  background-color: var(--color);
   color: white;
   h1 {
     padding-left: 20px;
