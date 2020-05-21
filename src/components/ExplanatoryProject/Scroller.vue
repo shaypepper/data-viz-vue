@@ -1,10 +1,25 @@
 <template>
   <main>
-    <h1 style="position: fixed; bottom: 0; text-align: right; width:100%;">
-      {{ currentScreen }}
-    </h1>
-    <div ref="intro" class="blue spacer" data-index="1">
-      <h1>Welcome welcome welcome!</h1>
+    <div id="intro" ref="intro" class="blue spacer" data-index="1">
+      <div class="textBox">
+        <h1>Inspired by The Upshot!</h1>
+        <p>
+          Data visualization enthusiasts everywhere adore the New York Times
+          column, The Upshot. The rock solid reporting underpins a column with a flair
+          for making information accessible. There are a few things about their work
+          that make it so impressive and inspiring.
+        </p>
+        <p>
+          First is its elegance. The journalists never use more than they need to
+          tell a story. They do this by using the basic
+          building blocks of data visualizations.
+        </p>
+        <p>
+          Second is its breadth. Many think of The Upshot as a political column (hello, election needle!).
+          As you'll see soon, there is a long list of topics that The Upshot covers beyond that.
+        </p>
+        <p>To make my point, let's look at the work in 2019.</p>
+      </div>
     </div>
 
     <section
@@ -56,13 +71,13 @@ const Component = Vue.extend({
   components: {
     // Credits,
     Tags,
-    Waffle,
+    Waffle
   },
   data() {
     return {
       scrollPosition: 0,
       currentScreen: 0,
-      states: [null, false, false, false, false],
+      states: [null, false, false, false, false]
     };
   },
   created() {
@@ -91,7 +106,7 @@ const Component = Vue.extend({
       this.$refs.waffleSection,
       this.$refs.spacer1,
       this.$refs.tagsSection,
-      this.$refs.spacer2,
+      this.$refs.spacer2
     ];
 
     // const breakpoints = [0];
@@ -102,7 +117,7 @@ const Component = Vue.extend({
 
     const screenHeight = this.$refs.intro.clientHeight;
     this.screenHeight = screenHeight;
-  },
+  }
 });
 
 export default Component;
@@ -119,13 +134,23 @@ main {
   scroll-behavior: smooth;
   // background-color: rgb(10, 10, 10);
 }
+
+#intro {
+}
+
+.textBox {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+
+  padding: 20vw;
+}
+
 .spacer {
   height: calc(120vh);
   width: 100%;
   color: white;
-  h1 {
-    padding-left: 20px;
-  }
   overflow: hidden;
   display: flex;
 }

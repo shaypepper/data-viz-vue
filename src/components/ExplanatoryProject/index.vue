@@ -4,12 +4,22 @@
       <div id="navbar">
         <button class="left" @click="handleBackClick">
           <svg viewBox="0 0 100 225" height="42px">
-            <path d="m88,16 l-80,96 l80,96" fill="transparent" stroke="black" stroke-width="16" />
+            <path
+              d="m88,16 l-80,96 l80,96"
+              fill="transparent"
+              stroke="black"
+              stroke-width="16"
+            />
           </svg>
         </button>
         <button class="right" @click="handleNextClick">
           <svg viewBox="0 0 100 225" height="42px">
-            <path d="m8,16 l80,96 l-80,96" fill="transparent" stroke="black" stroke-width="16" />
+            <path
+              d="m8,16 l80,96 l-80,96"
+              fill="transparent"
+              stroke="black"
+              stroke-width="16"
+            />
           </svg>
         </button>
         <h1>What I've learned from TheUpshot</h1>
@@ -42,7 +52,7 @@ const Component = Vue.extend({
   components: {
     Credits,
     Tags,
-    Waffle
+    Waffle,
   },
   mounted() {
     document.addEventListener("backbutton", this.handleBackClick, false);
@@ -50,7 +60,7 @@ const Component = Vue.extend({
   data() {
     return {
       screenOrder: ["tags", "credits", "waffle"],
-      currentScreen: 0
+      currentScreen: 0,
     };
   },
   methods: {
@@ -67,11 +77,11 @@ const Component = Vue.extend({
       if (masterContainer) {
         masterContainer.scrollLeft -= vwidth;
       }
-    }
+    },
   },
   beforeDestroy() {
     document.removeEventListener("backbutton", this.handleBackClick);
-  }
+  },
 });
 
 export default Component;
@@ -88,6 +98,7 @@ export default Component;
   overflow-y: hidden;
   height: 100vh;
   width: 100vw;
+  margin: 0 20px;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   display: grid;

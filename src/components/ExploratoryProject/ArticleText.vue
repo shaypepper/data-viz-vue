@@ -45,7 +45,7 @@ export default {
       );
     },
     formattedPublishDate() {
-      return d3.timeFormat("%B %d")(this.event.publishDate);
+      return d3.timeFormat("%B %_d")(this.event.publishDate);
     },
     formattedEventDate() {
       if (!this.event) {

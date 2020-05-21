@@ -49,7 +49,7 @@
         <rect
           :opacity="d.opacity"
           :stroke="d.stroke"
-          :width="d.width"
+          width="0.1"
           :height="d.height"
           :data-offset="d.x"
           @mouseenter="(e) => handleBrushChange(e, d)"
@@ -91,8 +91,6 @@ export default {
     return {
       svgHeight: 75,
       svgWidth,
-      currentBar: {},
-      hovered: false,
       xScale,
       yScale,
       rawArticles,
@@ -117,11 +115,11 @@ export default {
     },
     formattedStartDate() {
       const { tempStartDate, startDate } = this;
-      return d3.timeFormat("%Y-%m-%d")(tempStartDate || startDate);
+      return d3.timeFormat("%b %_d, %Y")(tempStartDate || startDate);
     },
     formattedEndDate() {
       const { tempEndDate, endDate } = this;
-      return d3.timeFormat("%Y-%m-%d")(tempEndDate || endDate);
+      return d3.timeFormat("%b %_d, %Y")(tempEndDate || endDate);
     },
     selectionStartX() {
       const {

@@ -2,7 +2,12 @@
   <div id="nightengalesRose">
     <svg height="100%" width="100%" viewBox="-10 -10 120 120">
       <g v-for="month in articlesByMonth" :key="month.index">
-        <path opacity="0.6" :d="`${month.wedgePath}`" stroke="white" />
+        <path
+          opacity="0.6"
+          :d="`${month.wedgePath}`"
+          stroke="white"
+          stroke-width="0.2"
+        />
         <path
           :id="`outer-month-arc-${month.index}`"
           fill-opacity="0"
