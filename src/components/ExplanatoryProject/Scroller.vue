@@ -144,7 +144,14 @@ main {
   width: 100vw;
   flex-direction: column;
 
-  padding: 20vw;
+  padding: 0 calc(max(50vw - 50vmin, 10vmin));
+
+  h1 {
+    font-family: nyt-cheltenham;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 42px;
+  }
 }
 
 .spacer {
