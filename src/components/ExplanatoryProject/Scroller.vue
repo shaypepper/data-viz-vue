@@ -2,7 +2,7 @@
   <main>
     <div id="intro" ref="intro" class="blue spacer" data-index="1">
       <div class="textBox">
-        <h1>Inspired by The Upshot!</h1>
+        <h1>The beauty of The&#160;Upshot</h1>
         <p>
           Data visualization enthusiasts everywhere adore the New York Times
           column, The Upshot. The rock solid reporting underpins a column with a flair
@@ -150,7 +150,10 @@ main {
     font-family: nyt-cheltenham;
     font-style: italic;
     font-weight: 700;
-    font-size: 42px;
+    font-size: 36px;
+  }
+  p {
+    font-size: 18px;
   }
 }
 

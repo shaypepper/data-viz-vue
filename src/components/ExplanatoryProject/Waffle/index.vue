@@ -238,10 +238,10 @@ export default {
     font-family: nyt-cheltenham;
     font-style: italic;
     font-weight: 700;
-    font-size: 42px;
+    font-size: 36px;
   }
   p {
-    font-size: 22px;
+    font-size: 18px;
 
     span {
       background-color: rgba(var(--rgb), 0.5);
