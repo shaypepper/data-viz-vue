@@ -1,10 +1,7 @@
 <template>
   <div class="shaysClass waffleChart">
     <transition name="fade" mode="out-in">
-      <div
-        v-if="currentScreen && currentWaffle.name"
-        class="fixed chart-wrapper"
-      >
+      <div v-if="currentScreen && currentWaffle.name" class="fixed chart-wrapper">
         <main>
           <transition-group name="fade" tag="p" mode="out-in">
             <chart-types
@@ -73,13 +70,7 @@
         </svg>
       </div>
     </transition>
-    <div
-      v-for="i in cardState.length"
-      :key="i"
-      :id="`card-${i}`"
-      :data-index="i"
-      class="card"
-    />
+    <div v-for="i in cardState.length" :key="i" :id="`card-${i}`" :data-index="i" class="card" />
   </div>
 </template>
 
@@ -94,7 +85,7 @@ import {
   getColorUseKey,
   getInteractionTypesKey,
   highlightBoxPaths,
-  cardState,
+  cardState
 } from "./waffle_templates";
 
 window.works = works;
@@ -104,7 +95,7 @@ export default {
   components: {
     ChartTypes,
     ColorUse,
-    InteractionType,
+    InteractionType
   },
   data() {
     const worksList = Object.values(works);
@@ -112,7 +103,7 @@ export default {
     const colorUseMap = {};
     const interactionTypesMap = {};
 
-    worksList.forEach((w) => {
+    worksList.forEach(w => {
       const { url, data_viz, first_of_type, interactive } = w;
       if (data_viz && first_of_type) {
         const { chart_types, color_use, interaction_types } = data_viz;
@@ -140,7 +131,7 @@ export default {
           hasHighlightColor: color_use?.includes("highlight"),
           chartTypeKey,
           colorUseKey,
-          interactionTypeKey,
+          interactionTypeKey
         });
       }
     });
@@ -153,14 +144,12 @@ export default {
       currentCard: 0,
       vizMap,
       cardState,
-      currentWaffle: chartTypeWaffle,
+      currentWaffle: chartTypeWaffle
     };
   },
   computed: {
     currentHighlightBoxData() {
-      return highlightBoxPaths.filter(
-        (d) => d.type === this.currentWaffle.name
-      );
+      return highlightBoxPaths.filter(d => d.type === this.currentWaffle.name);
     },
     currentCardState() {
       const { currentScreen } = this;
@@ -169,8 +158,8 @@ export default {
     dataVizList() {
       const currentWaffle = this.currentWaffle || { pattern: [] };
       const dataVizList = [];
-      currentWaffle.pattern.forEach((p) => {
-        p.split(" ").forEach((bls) => {
+      currentWaffle.pattern.forEach(p => {
+        p.split(" ").forEach(bls => {
           let url;
 
           url = this.vizMap[bls]?.shift();
@@ -183,7 +172,7 @@ export default {
         });
       });
       return dataVizList;
-    },
+    }
   },
   mounted() {
     const observer = new IntersectionObserver(this.respondToEntry);
@@ -204,8 +193,8 @@ export default {
       }
       Object.assign(this, cardState[this.currentCard]);
       console.log(this.currentWaffle);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -214,14 +203,14 @@ export default {
 .fixed {
   position: fixed;
   z-index: 1;
-  margin: 10vmin;
+  margin: 0 10vmin;
   display: grid;
   height: 80vmin;
   width: 80vmin;
   left: calc(50vw - 50vmin);
 
   &.chart-wrapper {
-    bottom: 0;
+    top: 0;
   }
 }
 
