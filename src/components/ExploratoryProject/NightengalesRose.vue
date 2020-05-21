@@ -21,7 +21,10 @@
             :xlink:href="`#outer-month-arc-${month.index}`"
             font-size="4"
           >
-            {{ getMonthFromIndex(month.index) }}
+            {{ getMonthFromIndex(month.index)
+            }}{{
+              [1, 4, 8, 10].includes(month.index) ? `.  ${month.count}` : ""
+            }}
           </textPath>
         </text>
         <circle r="60" cx="50" cy="50" opacity="0.01" />

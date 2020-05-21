@@ -43,7 +43,6 @@
           MANHATTAN
         </text>
       </g>
-
       <g id="events" v-for="article in filteredArticles" :key="article.index">
         <circle
           v-for="event in article.values"

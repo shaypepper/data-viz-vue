@@ -11,14 +11,14 @@
           id="cursor"
           fill="orange"
           opacity="0.5"
-          y="90"
+          :y="svgHeight - 10"
           :transform="`translate(${selectionStartX - 1}, 0)`"
           height="12"
           :width="selectionWidth + 2"
         />
         <text
           v-if="formattedStartDate != formattedEndDate"
-          y="98"
+          :y="svgHeight - 2"
           font-size="6"
           width="34"
           :transform="`translate(${Math.max(0, selectionStartX - 34)} , 0)`"
@@ -26,7 +26,7 @@
           {{ formattedStartDate }}
         </text>
         <text
-          y="98"
+          :y="svgHeight - 2"
           font-size="6"
           :transform="
             `translate(${Math.max(
@@ -58,7 +58,7 @@
         />
       </g>
 
-      <g ref="xAxis" transform="translate(0,90)" />
+      <g ref="xAxis" :transform="`translate(0,${svgHeight - 10})`" />
       <g ref="brush" x="brushStart" width="brushWidth" />
     </svg>
   </div>
@@ -89,7 +89,7 @@ export default {
   data() {
     const { xScale, yScale, rawArticles } = this.manipulateArticleList();
     return {
-      svgHeight: 100,
+      svgHeight: 75,
       svgWidth,
       currentBar: {},
       hovered: false,
