@@ -1,7 +1,7 @@
 <template>
   <div id="tagsScreen" class="shaysClass pin-target">
     <div id="chartWrapper">
-      <svg viewBox="20 -90 100 180" id="radialChart">
+      <svg viewBox="20 -90 100 90" id="radialChart">
         <g id="chartGroup" :style="`--chart-rotation: ${chartRotation}deg;`">
           <g stroke="white" fill="transparent" stroke-width="0.02">
             <circle r="40" />
@@ -15,7 +15,7 @@
             :data-uri="tag.uri"
             :data-index="i"
             :style="`--rotation-angle: ${tag.rotationAngle}deg`"
-            :class="`tag ${highlightedBarUrl == tag.uri? 'highlighted' : ''}`"
+            :class="`tag ${highlightedBarUrl == tag.uri ? 'highlighted' : ''}`"
           >
             <rect
               :class="`bar ${tag.__typename}`"
@@ -26,39 +26,54 @@
             />
 
             <text
-              v-if="highlightedBarUrl ===  tag.uri"
+              v-if="highlightedBarUrl === tag.uri"
               height="2"
               width="2"
               y="1.3"
               :x="-tag.works.length / 2 - 3"
               style="font-size:2"
-            >{{ tag.works.length }}</text>
+            >
+              {{ tag.works.length }}
+            </text>
 
             <g class="label">
-              <text
-                y="-1"
-                x="3"
-              >The Upshot wrote {{tag.prettyLength}} {{tag.works.length > 1 ? 'stories': 'story'}} about</text>
+              <text y="-1" x="3">
+                The Upshot wrote {{ tag.prettyLength }}
+                {{ tag.works.length > 1 ? "stories" : "story" }} about
+              </text>
               <text y="1.5" x="3">{{ tag.displayName }}</text>
             </g>
           </g>
         </g>
-        <g style="font-size: 1.5px; font-family: nyt-franklin; opacity: 0.7" fill="white">
-          <text y="-0.5" transform="rotate(21) translate(0 -60)">20 stories</text>
+        <g
+          style="font-size: 1.5px; font-family: nyt-franklin; opacity: 0.7"
+          fill="white"
+        >
+          <text y="-0.5" transform="rotate(21) translate(0 -60)">
+            20 stories
+          </text>
           <text y="9.5" transform="rotate(25) translate(0 -60)">40</text>
           <text y="19.5" transform="rotate(31) translate(0 -60)">60</text>
         </g>
         <g transform="translate(22 -88) scale(0.75)" opacity="0.7">
           <rect height="18.5" width="15" fill="rgba(210 210 210, 0.2)" />
           <g v-for="(tagType, i) in tagTypes" :key="tagType">
-            <rect :y="`${i * 3 + 1}`" x="1" :class="tagType" height="1.5" width="1.5" />
+            <rect
+              :y="`${i * 3 + 1}`"
+              x="1"
+              :class="tagType"
+              height="1.5"
+              width="1.5"
+            />
             <text
               style="font-family: nyt-franklin"
               x="3.5"
               :y="`${1.25 + i * 3 + 1}`"
               fill="black"
               font-size="1.5"
-            >{{ tagType }}</text>
+            >
+              {{ tagType }}
+            </text>
           </g>
         </g>
       </svg>
@@ -83,22 +98,25 @@ const Component = Vue.extend({
       }
       if (this.currentScreen && !this.yOffset) {
         this.yOffset = window.scrollY;
+        this.clientHeight = this.$el.clientHeight - 100;
       }
 
-      const relativeScrollPosition = window.scrollY - this.yOffset;
-      const unit =
-        (this.tagsSection || this.$el).clientHeight / this.tags.length;
+      const relativeScrollPosition = window.scrollY - 50 - this.yOffset;
+      const unit = this.clientHeight / this.tags.length;
       let newIndex =
         this.tags.length - 1 - Math.floor(relativeScrollPosition / unit);
       newIndex = Math.max(0, newIndex);
       newIndex = Math.min(this.tags.length - 1, newIndex);
-      this.setHighlightedBar(this.tags[newIndex].uri, newIndex);
+
+      this.highlightedBarUrl = this.tags[newIndex].uri;
+      this.chartRotation =
+        -rotationOffset - this.tags[newIndex - 1].rotationAngle;
     });
   },
   data() {
     let tagList = Object.values(tags)
       .sort((a, b) => (a.works.length - b.works.length) * 1000)
-      .filter(w => w.works.length >= 1);
+      .filter((w) => w.works.length >= 1);
     tagList = tagList.map((w, i) => {
       w.rotationAngle = (-360 * (i + 1)) / tagList.length - rotationOffset;
       w.rectX = -w.works.length;
@@ -116,19 +134,12 @@ const Component = Vue.extend({
         "Location",
         "Organization",
         "Keyword",
-        "Title"
+        "Title",
       ],
       activeScrolling: true,
-      yOffset: 0
+      yOffset: 0,
     };
   },
-  methods: {
-    setHighlightedBar(uri, index) {
-      this.highlightedBarUrl = uri;
-      this.chartRotation = -rotationOffset - this.tags[index].rotationAngle;
-      this.chartRotation = -rotationOffset - this.tags[index - 1].rotationAngle;
-    }
-  }
 });
 
 export default Component;
@@ -158,7 +169,7 @@ export function getPrettyNumber(n) {
     13: "thirteen",
     14: "fourteen",
     15: "fifteen",
-    20: "twenty"
+    20: "twenty",
   };
 
   if (n < 10) return strings[n];
@@ -186,6 +197,12 @@ $unit: 0.4vmax;
 #tagsScreen {
   display: flex;
   flex-direction: column;
+}
+
+.pin-target {
+  position: sticky;
+  top: 0;
+  width: 100%;
 }
 
 #chartGroup {

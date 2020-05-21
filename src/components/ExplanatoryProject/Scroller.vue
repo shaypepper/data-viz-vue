@@ -1,6 +1,8 @@
 <template>
   <main>
-    <h1 style="position: fixed; bottom: 0; text-align: right; width:100%;">{{currentScreen}}</h1>
+    <h1 style="position: fixed; bottom: 0; text-align: right; width:100%;">
+      {{ currentScreen }}
+    </h1>
     <div ref="intro" class="blue spacer" data-index="1">
       <h1>Welcome welcome welcome!</h1>
     </div>
@@ -8,7 +10,11 @@
     <section
       ref="waffleSection"
       data-index="2"
-      :class="`double-container ${this.currentScreen > 2 ? 'complete' : ''} ${this.currentScreen === 2 ? 'container-in-view' : ''}`"
+      :class="
+        `double-container ${this.currentScreen > 2 ? 'complete' : ''} ${
+          this.currentScreen === 2 ? 'container-in-view' : ''
+        }`
+      "
     >
       <div>
         <waffle
@@ -22,7 +28,11 @@
     <section
       ref="tagsSection"
       data-index="4"
-      :class="`double-container times2 ${this.currentScreen > 4 ? 'complete' : ''} ${this.currentScreen === 4 ? 'container-in-view' : ''}`"
+      :class="
+        `double-container times2 ${this.currentScreen > 4 ? 'complete' : ''} ${
+          this.currentScreen === 4 ? 'container-in-view' : ''
+        }`
+      "
     >
       <div>
         <tags
@@ -32,7 +42,7 @@
         />
       </div>
     </section>
-    <section ref="spacer2" data-index="5" class="green spacer" />
+    <!-- <section ref="spacer2" data-index="5" class="green spacer" /> -->
   </main>
 </template>
 
@@ -46,13 +56,13 @@ const Component = Vue.extend({
   components: {
     // Credits,
     Tags,
-    Waffle
+    Waffle,
   },
   data() {
     return {
       scrollPosition: 0,
       currentScreen: 0,
-      states: [null, false, false, false, false]
+      states: [null, false, false, false, false],
     };
   },
   created() {
@@ -81,7 +91,7 @@ const Component = Vue.extend({
       this.$refs.waffleSection,
       this.$refs.spacer1,
       this.$refs.tagsSection,
-      this.$refs.spacer2
+      this.$refs.spacer2,
     ];
 
     // const breakpoints = [0];
@@ -92,13 +102,13 @@ const Component = Vue.extend({
 
     const screenHeight = this.$refs.intro.clientHeight;
     this.screenHeight = screenHeight;
-  }
+  },
 });
 
 export default Component;
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import "../../assets/css/color-scheme.scss";
 * {
   background-color: --color;
@@ -107,6 +117,7 @@ export default Component;
 main {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  // background-color: rgb(10, 10, 10);
 }
 .spacer {
   height: calc(120vh);
@@ -135,14 +146,6 @@ main {
 
   > div {
     // height: 100vh;
-    width: 100%;
-  }
-}
-
-.container-in-view {
-  .pin-target {
-    position: fixed;
-    top: 0;
     width: 100%;
   }
 }

@@ -106,7 +106,7 @@ export const interactionTypePaths = [
     name: "filter",
   },
   {
-    path: "M2.5,2.5 m135,30 v15 h45 v-15 Z",
+    path: "M2.5,2.5 m135,30 v15 h30 v15 h15 v-30 Z",
     type: "interactionType",
     name: "quiz",
   },
@@ -151,23 +151,31 @@ export function getInteractionTypesKey(interaction_types) {
   return interactionTypesKey;
 }
 
+const nullWaffle = {
+  name: null,
+  pattern: [],
+};
+
 export const cardState = [
   { currentWaffle: chartTypeWaffle, highlightBox: null },
   { currentWaffle: chartTypeWaffle, highlightBox: null },
   { currentWaffle: chartTypeWaffle, highlightBox: null },
-  { currentWaffle: chartTypeWaffle, highlightBox: "bar" },
   { currentWaffle: chartTypeWaffle, highlightBox: "line" },
   { currentWaffle: chartTypeWaffle, highlightBox: "scatter" },
+  { currentWaffle: chartTypeWaffle, highlightBox: "bar" },
+  { currentWaffle: chartTypeWaffle, highlightBox: "other" },
   { currentWaffle: chartTypeWaffle, highlightBox: null },
+  { currentWaffle: nullWaffle, highlightBox: null },
   { currentWaffle: colorUseWaffle, highlightBox: null },
-  { currentWaffle: colorUseWaffle, highlightBox: "categorical" },
-  { currentWaffle: colorUseWaffle, highlightBox: "diverging" },
-  { currentWaffle: colorUseWaffle, highlightBox: "highlight" },
   { currentWaffle: colorUseWaffle, highlightBox: "sequential" },
+  { currentWaffle: colorUseWaffle, highlightBox: "categorical" },
+  { currentWaffle: colorUseWaffle, highlightBox: "highlight" },
+  { currentWaffle: colorUseWaffle, highlightBox: "diverging" },
   { currentWaffle: colorUseWaffle, highlightBox: null },
+  { currentWaffle: nullWaffle, highlightBox: null },
   { currentWaffle: interactionTypeWaffle, highlightBox: null },
   { currentWaffle: interactionTypeWaffle, highlightBox: "hover" },
-  { currentWaffle: interactionTypeWaffle, highlightBox: "quiz" },
   { currentWaffle: interactionTypeWaffle, highlightBox: "filter" },
+  { currentWaffle: interactionTypeWaffle, highlightBox: "quiz" },
   { currentWaffle: interactionTypeWaffle, highlightBox: null },
 ];

@@ -1,27 +1,13 @@
 <template>
   <div id="app">
-    <!-- <exploratory-project /> -->
-    <explanatory-project />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import ExploratoryProject from "./components/ExploratoryProject";
-import ExplanatoryProject from "./components/ExplanatoryProject/Scroller";
-import Vue from "vue";
-const Component = Vue.extend({
+export default {
   name: "App",
-  components: {
-    // ExploratoryProject,
-    ExplanatoryProject
-  },
-  data() {
-    return {};
-  },
-  methods: {}
-});
-
-export default Component;
+};
 </script>
 
 <style>

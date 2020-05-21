@@ -1,113 +1,134 @@
 <template>
-  <div class="shaysClass">
-    <p
-      v-if="currentScreen"
-      id="currentCardTracker"
-      style="position:fixed;color: white; top:0; right:0;"
-    >{{currentCard}} {{highlightBox}}</p>
-    <main id="fixedTextBox" :class="currentScreen ? 'visible' : 'invisible'">
-      <!-- <h1>Sticking to the basics</h1> -->
-      <p>
-        <!--
-        While the Upshot is famous for some of its most interactive charts, the
-        writers are usually able to make their analysis and visualizations
-        approachable by sticking to the basics.
-        <br />-->
-        <br />In the ninety-five stories with visualizations in 2019, thirty-four
-        included
-        <span
-          :class="`l ${highlightBox === 'line' && 'full-opacity'}`"
-          data-hovered-type="line"
-        >line graphs</span>, twenty included
-        <span
-          :class="`s ${highlightBox === 'scatter' && 'full-opacity'}`"
-          data-hovered-type="scatter"
-        >scatter plots</span>, and thirty-five included
-        <span
-          :class="`b ${highlightBox === 'bar' && 'full-opacity'}`"
-          data-hovered-type="bar"
-        >bar charts</span>. Twenty-four resorted to
-        <span
-          :class="`${highlightBox === 'other' && 'full-opacity'}`"
-          data-hovered-type="other"
-        >other chart-types</span>.
-      </p>
-    </main>
-    <div :class="currentScreen ? 'fixed chart-wrapper' : 'fixed chart-wrapper invisible'">
-      <svg viewBox="2.5 2.5 180 120">
-        <g class="squares">
-          <g
-            v-for="(viz, index) in dataVizList"
-            :key="viz.url"
-            :class="viz[currentWaffle.name + 'Key']"
-            :transform="
-            `translate(${5 + (index % 12) * 15},  ${5 +
-              Math.floor(index / 12) * 15})`
-          "
-          >
-            <rect class="square" height="10" width="10px" opacity="0.6" />
-            <!-- <circle v-if="viz.hasHighlightColor" r="4" cx="5" cy="5" /> -->
+  <div class="shaysClass waffleChart">
+    <transition name="fade" mode="out-in">
+      <div
+        v-if="currentScreen && currentWaffle.name"
+        class="fixed chart-wrapper"
+      >
+        <main>
+          <transition-group name="fade" tag="p" mode="out-in">
+            <chart-types
+              v-if="currentScreen && currentWaffle.name === 'chartType'"
+              key="chartType"
+              :highlightBox="highlightBox"
+            />
+
+            <color-use
+              v-if="currentScreen && currentWaffle.name === 'colorUse'"
+              key="colorUse"
+              :highlightBox="highlightBox"
+            />
+
+            <interaction-type
+              v-if="currentScreen && currentWaffle.name === 'interactionType'"
+              key="interactionType"
+              :highlightBox="highlightBox"
+            />
+          </transition-group>
+        </main>
+        <svg viewBox="2.5 2.5 180 120">
+          <g class="squares">
+            <g
+              v-for="(viz, index) in dataVizList"
+              :key="viz.url"
+              :class="viz[currentWaffle.name + 'Key']"
+              :transform="
+                `translate(${5 + (index % 12) * 15},  ${5 +
+                  Math.floor(index / 12) * 15})`
+              "
+            >
+              <rect
+                class="square"
+                height="10"
+                width="10px"
+                opacity="0.6"
+                :stroke="viz.interactive && 'white'"
+                :stroke-dasharray="viz.interactive && 1"
+              />
+              <circle
+                v-if="
+                  viz.hasHighlightColor && currentWaffle.name === 'colorUse'
+                "
+                r="4"
+                cx="5"
+                cy="5"
+              />
+            </g>
           </g>
-        </g>
 
-        <g class="chart-type-overlay">
-          <rect class="chart-overlay" height="125px" width="185px" />
+          <g class="chart-type-overlay">
+            <rect class="chart-overlay" height="125px" width="185px" />
 
-          <path
-            v-for="box in currentHighlightBoxData"
-            :key="box.name"
-            :class="
-              `box ${box.name} top ${highlightBox === box.name &&
-              'highlighted'}`
-            "
-            :data-hovered-type="box.name"
-            :d="box.path"
-          />
-        </g>
-      </svg>
-    </div>
-    <div v-for="i in cardState.length" :key="i" :id="`card-${i}`" :data-index="i" class="card">
-      <h4>card {{i}}</h4>
-    </div>
+            <path
+              v-for="box in currentHighlightBoxData"
+              :key="box.name"
+              :class="
+                `box ${box.name} top ${highlightBox === box.name &&
+                  'highlighted'}`
+              "
+              :data-hovered-type="box.name"
+              :d="box.path"
+            />
+          </g>
+        </svg>
+      </div>
+    </transition>
+    <div
+      v-for="i in cardState.length"
+      :key="i"
+      :id="`card-${i}`"
+      :data-index="i"
+      class="card"
+    />
   </div>
 </template>
 
 <script>
 import works from "../json/works_by_url.json";
+import ChartTypes from "./paragraphs/ChartTypes";
+import ColorUse from "./paragraphs/ColorUse";
+import InteractionType from "./paragraphs/InteractionType";
 import {
   chartTypeWaffle,
   getChartTypesKey,
   getColorUseKey,
   getInteractionTypesKey,
   highlightBoxPaths,
-  cardState
+  cardState,
 } from "./waffle_templates";
+
+window.works = works;
 
 export default {
   props: ["scrollPosition", "currentScreen"],
+  components: {
+    ChartTypes,
+    ColorUse,
+    InteractionType,
+  },
   data() {
     const worksList = Object.values(works);
     const vizMap = {};
     const colorUseMap = {};
     const interactionTypesMap = {};
 
-    worksList.forEach(w => {
-      const { url, data_viz, first_of_type } = w;
+    worksList.forEach((w) => {
+      const { url, data_viz, first_of_type, interactive } = w;
       if (data_viz && first_of_type) {
         const { chart_types, color_use, interaction_types } = data_viz;
 
         const chartTypeKey = getChartTypesKey(chart_types);
         vizMap[chartTypeKey] = vizMap[chartTypeKey] || [];
-        vizMap[chartTypeKey].push(url);
+        vizMap[chartTypeKey][!interactive ? "push" : "unshift"](url);
 
         const colorUseKey = getColorUseKey(color_use);
         vizMap[colorUseKey] = vizMap[colorUseKey] || [];
-        vizMap[colorUseKey].push(url);
+        vizMap[colorUseKey][!interactive ? "push" : "unshift"](url);
         colorUseMap[url] = colorUseKey;
 
         const interactionTypeKey = getInteractionTypesKey(interaction_types);
         vizMap[interactionTypeKey] = vizMap[interactionTypeKey] || [];
-        vizMap[interactionTypeKey].push(url);
+        vizMap[interactionTypeKey][!interactive ? "push" : "unshift"](url);
         interactionTypesMap[url] = interactionTypeKey;
 
         Object.assign(works[url], {
@@ -119,7 +140,7 @@ export default {
           hasHighlightColor: color_use?.includes("highlight"),
           chartTypeKey,
           colorUseKey,
-          interactionTypeKey
+          interactionTypeKey,
         });
       }
     });
@@ -132,22 +153,24 @@ export default {
       currentCard: 0,
       vizMap,
       cardState,
-      currentWaffle: chartTypeWaffle
+      currentWaffle: chartTypeWaffle,
     };
   },
   computed: {
     currentHighlightBoxData() {
-      return highlightBoxPaths.filter(d => d.type === this.currentWaffle.name);
+      return highlightBoxPaths.filter(
+        (d) => d.type === this.currentWaffle.name
+      );
     },
     currentCardState() {
       const { currentScreen } = this;
       return cardState[Math.floor(currentScreen)];
     },
     dataVizList() {
-      const currentWaffle = this.currentWaffle || [];
+      const currentWaffle = this.currentWaffle || { pattern: [] };
       const dataVizList = [];
-      currentWaffle.pattern.forEach(p => {
-        p.split(" ").forEach(bls => {
+      currentWaffle.pattern.forEach((p) => {
+        p.split(" ").forEach((bls) => {
           let url;
 
           url = this.vizMap[bls]?.shift();
@@ -160,7 +183,7 @@ export default {
         });
       });
       return dataVizList;
-    }
+    },
   },
   mounted() {
     const observer = new IntersectionObserver(this.respondToEntry);
@@ -180,48 +203,41 @@ export default {
         }
       }
       Object.assign(this, cardState[this.currentCard]);
-      console.log(cardState);
-    }
-  }
+      console.log(this.currentWaffle);
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../../assets/css/color-scheme.scss";
 .fixed {
   position: fixed;
-
   z-index: 1;
-  width: 100%;
+  margin: 10vmin;
+  display: grid;
+  height: 80vmin;
+  width: 80vmin;
+  left: calc(50vw - 50vmin);
 
   &.chart-wrapper {
     bottom: 0;
   }
 }
-#fixedTextBox {
-  position: fixed;
-  top: 0;
-  height: 30vh;
-  padding: 10vh;
-}
 
 .card {
-  // &#card-1 {
-  //   height: 100vh;
-  // }
-  margin-bottom: 110vh;
-  height: 100px;
-  border: black 3px solid;
-  background-color: black;
+  height: 110vh;
 }
 
-.visible {
-  opacity: 1;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.invisible {
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
-.shaysClass {
+
+.shaysClass.waffleChart {
   --rgb: 220, 220, 220;
   --hue: 0;
   color: white;
@@ -245,14 +261,9 @@ export default {
       white-space: nowrap;
       &:hover,
       &.full-opacity {
-        background-color: rgba(var(--rgb), 0.8);
+        background-color: rgba(var(--rgb), 0.9);
       }
     }
-  }
-  svg {
-    max-width: 80vw;
-    max-height: 50vh;
-    margin: 10vw;
   }
 }
 
@@ -263,7 +274,6 @@ export default {
 .square {
   fill: rgba(var(--rgb), 0.8);
   transition: fill 1000ms ease;
-  // fill: rgba(250, 250, 250, 0.7);
 }
 
 rect.chart-overlay {
@@ -278,7 +288,6 @@ path.box {
     opacity: 0.3;
     stroke-width: 3;
 
-    // &:hover,
     &.full-opacity {
       opacity: 0.8;
     }
@@ -330,11 +339,10 @@ path.box {
 .cdq,
 .other {
   --rgb: 80, 72, 82;
-  --color: rgb(80, 72, 82);
+  --color: #ffffff;
 }
 
 * {
-  --color: rgb(80, 72, 82);
-  --lighter-highlight: rgba(var(--rgb), 0.5);
+  --color: white;
 }
 </style>

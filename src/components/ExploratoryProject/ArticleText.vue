@@ -2,7 +2,7 @@
   <div id="articleText">
     <div v-if="event">
       <h3>{{ formattedEventDate }}</h3>
-      <p>{{eventText}}</p>
+      <p>{{ eventText }}</p>
       <p>Published {{ formattedPublishDate }}</p>
     </div>
   </div>
@@ -15,7 +15,7 @@ const monthParser = d3.timeFormat("%m");
 export default {
   name: "articletext",
   props: {
-    event: Object
+    event: Object,
   },
   data() {
     return {};
@@ -52,16 +52,13 @@ export default {
         return "This page is interactive.";
       }
       return d3.timeFormat("%A %B %e, %Y")(this.parsedEventDate);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 #articleText {
-  background-color: #fc8649;
-  grid-column: 2 / 3;
-  grid-row: -3 / -1;
   text-align: left;
   padding: 15px;
 }

@@ -1,12 +1,25 @@
 import Vue from "vue";
+import VueRouter from "vue-router";
 import App from "./App.vue";
+import ExploratoryProject from "./components/ExploratoryProject/index.vue";
+import ExplanatoryProject from "./components/ExplanatoryProject/Scroller.vue";
+import WorkingWithData from "./components/WorkingWithData/index.vue";
 import { gsap } from "gsap";
-import { Draggable } from "gsap/Draggable";
 
 Vue.config.productionTip = false;
 Vue.use(gsap);
-gsap.registerPlugin(Draggable);
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+  routes: [
+    // { path: "/", component: App },
+    { path: "/bill", component: ExploratoryProject },
+    { path: "/upshot", component: ExplanatoryProject },
+    { path: "/verbs", component: WorkingWithData },
+  ],
+});
 
 new Vue({
+  router,
   render: (h) => h(App),
 }).$mount("#app");

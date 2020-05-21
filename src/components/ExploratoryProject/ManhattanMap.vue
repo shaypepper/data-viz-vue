@@ -1,13 +1,12 @@
 <template>
   <div id="manhattanMap">
-    <h3>Events that Bill covered</h3>
-    <svg height="100%" width="100%" :viewBox="`0 0 ${svgWidth} ${svgHeight}`">
+    <svg :viewBox="`10 -10 ${svgWidth - 10} ${svgHeight + 10}`">
       <g id="map">
         <path
           v-for="feature in geojson.features"
           :key="feature.properties.name"
           fill="black"
-          stroke="#876876"
+          stroke="white"
           stroke-width="0.25"
           opacity="0.6"
           :d="generatePath(feature)"
@@ -18,14 +17,17 @@
             r="19"
             opacity="0.6"
             d="M0,20 A20,20,0 1 1 40,20 A20,20,0 1 1 0,20 Z"
-          />>
+          />
+          >
           <text stroke="black" font-size="5" stroke-width="0.05">
             <textPath
               xlink:href="#everywhereCircle"
               textLength="50"
               side="left"
               opacity="0.6"
-            >OTHER / UNKNOWN</textPath>
+            >
+              OTHER / UNKNOWN
+            </textPath>
           </text>
         </g>
         <text
@@ -37,7 +39,9 @@
           textLength="45"
           opacity="0.6"
           transform="rotate(-75.5, 20, 30)"
-        >MANHATTAN</text>
+        >
+          MANHATTAN
+        </text>
       </g>
 
       <g id="events" v-for="article in filteredArticles" :key="article.index">
@@ -57,7 +61,7 @@
 
 <script>
 import * as d3 from "d3";
-import manhattanGeojson from "./data/manhattan.js";
+import manhattanGeojson from "./data/manhattan.ts";
 
 const excludedNeighborhoods = new Set([
   "Washington Heights",
@@ -65,7 +69,7 @@ const excludedNeighborhoods = new Set([
   "Marble Hill",
   "Governors Island",
   "Ellis Island",
-  "Liberty Island"
+  "Liberty Island",
 ]);
 
 export default {
@@ -74,16 +78,16 @@ export default {
     events: Array,
     locations: Map,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   },
   data() {
     const svgHeight = 175;
     const svgWidth = 100;
     const geojson = {
       type: "FeatureCollection",
-      features: manhattanGeojson.features.filter(f => {
+      features: manhattanGeojson.features.filter((f) => {
         return !excludedNeighborhoods.has(f.properties.name);
-      })
+      }),
     };
 
     const projection = d3
@@ -98,14 +102,14 @@ export default {
       svgWidth,
       projection,
       generatePath,
-      geojson
+      geojson,
     };
   },
   computed: {
     filteredArticles() {
       const { rawArticles, startDate, endDate } = this;
 
-      const articles = rawArticles.filter(article => {
+      const articles = rawArticles.filter((article) => {
         return (
           article.publishDate >= startDate && article.publishDate <= endDate
         );
@@ -114,10 +118,10 @@ export default {
     },
     mappedEvents() {
       const { events, getCoordinatesForEvent } = this;
-      return events.map(d => {
+      return events.map((d) => {
         return Object.assign(
           {
-            tranform: getCoordinatesForEvent(d)
+            tranform: getCoordinatesForEvent(d),
           },
           d
         );
@@ -130,14 +134,14 @@ export default {
     rawArticles() {
       const rawArticles = d3
         .nest()
-        .key(d => d3.timeFormat("%Y-%m-%d")(d.publishDate))
+        .key((d) => d3.timeFormat("%Y-%m-%d")(d.publishDate))
         .entries(this.events)
         .sort((a, b) => a.key - b.key);
 
-      return rawArticles.map(a =>
+      return rawArticles.map((a) =>
         Object.assign({ publishDate: a.values[0].publishDate }, a)
       );
-    }
+    },
   },
   methods: {
     getCoordinatesForEvent(d) {
@@ -154,22 +158,23 @@ export default {
       } else {
         coordinates = this.projection([
           -loc.longitude + Math.random() * 0.002,
-          loc.latitude + Math.random() * 0.002
+          loc.latitude + Math.random() * 0.002,
         ]);
       }
       if (!coordinates) return;
       const stringRep = coordinates.join(",");
       return `translate(${stringRep || "0,0"})`;
-    }
-  }
+    },
+  },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 #manhattanMap {
-  background-color: #876876;
-  grid-column: 1 / 2;
-  grid-row: 2 / -1;
   padding: 15px;
+  svg {
+    height: 100%;
+    max-width: 100%;
+  }
 }
 #manhattanMap circle {
   transition: opacity 200ms linear;

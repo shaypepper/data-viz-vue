@@ -1,24 +1,30 @@
 <template>
   <div id="nightengalesRose">
-    <svg height="100%" width="100%" viewBox="0 0 100 100">
+    <svg height="100%" width="100%" viewBox="-10 -10 120 120">
       <g v-for="month in articlesByMonth" :key="month.index">
-        <path opacity="0.6" :d="`${month.wedgePath}`" />
-        <path :id="`outer-month-arc-${month.index}`" fill-opacity="0" :d="`${month.outerArcPath}`" />
+        <path opacity="0.6" :d="`${month.wedgePath}`" stroke="white" />
+        <path
+          :id="`outer-month-arc-${month.index}`"
+          fill-opacity="0"
+          :d="`${month.outerArcPath}`"
+        />
 
         <path
           :id="`inner-month-arc-${month.index}`"
           fill-opacity="0"
           :d="`${month.innerArcPath}`"
-          stroke="black"
+          stroke="#ffa600"
           stroke-opacity="0.7"
         />
         <text>
           <textPath
             :xlink:href="`#outer-month-arc-${month.index}`"
             font-size="4"
-          >{{getMonthFromIndex(month.index)}}</textPath>
+          >
+            {{ getMonthFromIndex(month.index) }}
+          </textPath>
         </text>
-        <circle r="50" cx="50" cy="50" opacity="0.01" />
+        <circle r="60" cx="50" cy="50" opacity="0.01" />
       </g>
     </svg>
   </div>
@@ -29,7 +35,7 @@ import * as d3 from "d3";
 export default {
   name: "nightengalesrose",
   props: {
-    events: Array
+    events: Array,
   },
   data() {
     return {};
@@ -38,7 +44,7 @@ export default {
     nakedMonths() {
       const { events } = this;
       const nakedMonths = new Array(12).fill(0);
-      (events || []).forEach(event => {
+      (events || []).forEach((event) => {
         const month = event.publishDate.getMonth();
         const publishYear = event.publishDate.getYear();
         const eventDate = d3.timeParse("%b %d %Y")(
@@ -65,11 +71,11 @@ export default {
           wedgePath: `M${x1},${y1}L${50},${50}L${x2},${y2}A${r},${r} 0,0,1 ${x1},${y1}`,
           outerArcPath: `M${x2},${y2}A${r},${r} 0,0,1 ${x1},${y1}`,
           innerArcPath: `M${innerPath[2]},${innerPath[3]}A${r},${r} 0,0,1 ${innerPath[0]},${innerPath[1]}`,
-          count: m
+          count: m,
         };
       });
       return months || [];
-    }
+    },
   },
   methods: {
     getArc(r, i) {
@@ -92,17 +98,11 @@ export default {
         "SEP",
         "OCT",
         "NOV",
-        "DEC"
+        "DEC",
       ][i];
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-#nightengalesRose {
-  background-color: #b76c7a;
-  grid-column: 3 / 4;
-  grid-row: 3 / 5;
-}
-</style>
+<style scoped></style>

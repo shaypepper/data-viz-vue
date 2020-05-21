@@ -1,9 +1,7 @@
 <template>
   <div id="barChart">
     <svg
-      height="100%"
-      width="100%"
-      viewBox="0 0 200 100"
+      :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
       @mousemove="handleHover"
       @mousedown="brushStart"
       @mouseup="brushEnd"
@@ -24,16 +22,29 @@
           font-size="6"
           width="34"
           :transform="`translate(${Math.max(0, selectionStartX - 34)} , 0)`"
-        >{{formattedStartDate}}</text>
+        >
+          {{ formattedStartDate }}
+        </text>
         <text
           y="98"
           font-size="6"
-          :transform="`translate(${Math.max(34, Math.min(selectionStartX + selectionWidth + 3, 200 - 34))} , 0)`"
-        >{{formattedEndDate}}</text>
+          :transform="
+            `translate(${Math.max(
+              34,
+              Math.min(selectionStartX + selectionWidth + 3, svgWidth - 34)
+            )} , 0)`
+          "
+        >
+          {{ formattedEndDate }}
+        </text>
       </g>
-      <g v-for="d in articles" v-bind:key="d.key" :transform="`translate(${d.x},${d.y})`">
+      <g
+        v-for="d in articles"
+        v-bind:key="d.key"
+        :transform="`translate(${d.x},${d.y})`"
+      >
         <g v-if="d.nEvents > 16">
-          <text y="-2" font-size="3" x="-1">{{d.nEvents}}</text>
+          <text y="-2" font-size="3" x="-1">{{ d.nEvents }}</text>
         </g>
         <rect
           :opacity="d.opacity"
@@ -41,7 +52,7 @@
           :width="d.width"
           :height="d.height"
           :data-offset="d.x"
-          @mouseenter="e => handleBrushChange(e,d)"
+          @mouseenter="(e) => handleBrushChange(e, d)"
           @mousedown="(e) => setStartDate(e, d)"
           @mouseup="(e) => setEndDate(e, d)"
         />
@@ -64,21 +75,22 @@ const margin = {
     bottom: 10,
     right: 10,
     top: 10,
-    left: 10
+    left: 10,
   },
-  svgWidth = 200;
+  svgWidth = 400;
 
 export default {
   name: "barchart",
   props: {
     events: Array,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
   },
   data() {
     const { xScale, yScale, rawArticles } = this.manipulateArticleList();
     return {
       svgHeight: 100,
+      svgWidth,
       currentBar: {},
       hovered: false,
       xScale,
@@ -90,7 +102,7 @@ export default {
       clientOffset: 0,
       parentWidth: 0,
       tempStartDate: null,
-      tempEndDate: null
+      tempEndDate: null,
     };
   },
   computed: {
@@ -117,7 +129,7 @@ export default {
         selectionStart,
         xScale,
         startDateKey,
-        tempStartDate
+        tempStartDate,
       } = this;
       return (
         (brushing && tempStartDate && selectionStart) ||
@@ -133,7 +145,7 @@ export default {
         endDateKey,
         brushing,
         xScale,
-        tempStartDate
+        tempStartDate,
       } = this;
       return Math.max(
         0,
@@ -158,10 +170,11 @@ export default {
               ? 1
               : 0.2,
           x: this.xScale(article.key),
-          y: this.svgHeight - this.yScale(article.values.length) - margin.bottom
+          y:
+            this.svgHeight - this.yScale(article.values.length) - margin.bottom,
         };
       });
-    }
+    },
   },
   watch: {
     startDate() {
@@ -171,23 +184,23 @@ export default {
       immediate: true,
       handler: function() {
         this.manipulateArticleList();
-      }
-    }
+      },
+    },
   },
   methods: {
     manipulateArticleList() {
       const rawArticles = d3
         .nest()
-        .key(d => d3.timeFormat("%Y-%m-%d")(d.publishDate))
+        .key((d) => d3.timeFormat("%Y-%m-%d")(d.publishDate))
         .entries(this.events)
         .sort((a, b) => a.key - b.key);
       const xScale = d3
         .scaleBand()
-        .domain(rawArticles.map(d => d.key))
+        .domain(rawArticles.map((d) => d.key))
         .range([0, svgWidth]);
       const yScale = d3
         .scaleLinear()
-        .domain([0, d3.max(rawArticles.map(d => d.values.length))])
+        .domain([0, d3.max(rawArticles.map((d) => d.values.length))])
         .range([0, this.svgHeight - margin.bottom - margin.top]);
 
       if (this.rawArticles) {
@@ -198,7 +211,7 @@ export default {
         return {
           xScale,
           yScale,
-          rawArticles
+          rawArticles,
         };
       }
     },
@@ -268,18 +281,21 @@ export default {
       this.brushing = false;
       this.selectionStart = 0;
       this.selectionEnd = 0;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../assets/css/color-scheme.scss";
 #barChart {
-  background-color: #e2746a;
-  grid-column: 2 / 4;
-  grid-row: 2 / 3;
   padding: 15px;
   cursor: crosshair;
+
+  svg {
+    height: 100%;
+    max-width: 100%;
+  }
 }
 
 #cursor {
