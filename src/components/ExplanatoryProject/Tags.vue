@@ -220,9 +220,6 @@ div.shaysClass {
   background-color: transparent;
   overflow: visible;
 
-  svg {
-    max-width: 70%;
-  }
   div.box {
     pointer-events: none;
   }
