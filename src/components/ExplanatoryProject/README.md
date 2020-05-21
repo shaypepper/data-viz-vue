@@ -1,13 +1,90 @@
 # Explanatory project: Inspiration from The Upshot
 
-For this project I wanted to attempt something that I've wanted to do for a long time: a meta visualization. The Upshot is one of the most beloved parts of New York Times to data visualization enthusiasts and while I would love
+This project had a mix of something called interactives, which are stories with custom html/css, as well as more traditional articles. The generic term for these is "work". So when I queried the NYT database, I queried for "anyWork". I manipulated the json into a few different files to decrease duplicate code as much as possible.
 
-Because I work for The Times, I have easy access to the archives. I did a search for all articles from The Upshot in 2019 and then went from there. I went through a few iterations of this. The first included data about collaboration between the journalists. For this, I needed to query the data and include the journalists' name, biography url, a headshot, and a few other things. To get the data for the different subjects covered in the articles, I needed to do a search on something called Times Tags. It's a tool for our archives that helps with searching. An article usually has three to five tags. From there I simply tallied up the number of articles that used each particular tag.
+### Works
 
-For the visualization attributes waffle charts. First of all, I will probably never again in my life get to write the word "waffle" so much in my code. It was a delight. As for the data. My husband and I spent a weekend going through all of these articles. I had the list from the queries I described above and I went through them one by one. My husband updated the spreadsheet as he prompted me for each column. This helped so that I wasn't trying to go back and forth between windows and a spreadsheet. My sister-in-law did not appreciate this exercise. "Color use?" "Diverging!" "Data types?" "Percentile! Poll! Money!" It was a lot of work but it also went more quickly than I expected.
+For the list of works, I used an object with the article URL as the key. The lists for `timesTags` and `credits` just use ids and there is another json file with that data.
 
-For the visualization itself, my biggest consideration was articles that had multiple attributes. I needed a way to express this in the color while also keeping the reader from getting entirely lost. I found that primary colors allowed for me to do this highlighting in a natural way. Something that has both a line (yellow) chart and a bar chart (blue) could resonably be colored green. This presented a new challenge though which was arranging the squares in a way that allowed for that overlapping but still used continuous blocks. This took a lot of planning and hours in Google draw to get it just right. Arranging well allowed for the large highlight blocks that you see as you scroll. This highlighting ability was important for me for a few reasons. Firstly the reader doesn't have to spend too long deciphering what the combined colors mean. It also allows for someone who is color blind to be able to see more clearly. I chose to label within the paragraphs so it would read more naturally. Unlike the exploratory project, I wanted the message to be clear and easy to understand.
+```json
+{
+  "https://www.nytimes.com/2019/12/05/upshot/impeachment-biggest-issue-voters-poll.html": {
+    "promotionalHeadline": "What Is Voters’ Highest Priority? There’s a Way to Find Out",
+    "url": "https://www.nytimes.com/2019/12/05/upshot/impeachment-biggest-issue-voters-poll.html",
+    "promotionalMedia": {
+      "width": 640,
+      "height": 640,
+      "url": "https://static01.nyt.com/images/2019/12/03/upshot/up-vavreck1-1575504369739/up-vavreck1-1575504369739-square640.png",
+      "name": "square640"
+    },
+    "timesTags": [
+      "nyt://subject/ab2ce501-c350-5a1b-84b6-207da603c658",
+      "nyt://subject/bd1ee2e7-9487-57ae-8a98-79a97a4f7416",
+      "nyt://subject/6802f721-c0b7-5d51-900b-c87a450f58f7",
+      "nyt://subject/5fddc6c6-cafa-5eee-bcba-c2e0b6e40ce7",
+      "nyt://subject/aa87b919-5ba3-5f29-8b78-e3a88f443793"
+    ],
+    "credits": [
+      "UGVyc29uOm55dDovL3BlcnNvbi82MWE0Y2ZhNC0wZTUzLTVlMmMtYmM3OC03YTg0MWQ2ODlmNDM=",
+      "UGVyc29uOm55dDovL3BlcnNvbi9jODlhN2IzMS1hYTJjLTU1MTItYmU3YS02YTZjNmZiN2ExNWU=",
+      "UGVyc29uOm55dDovL3BlcnNvbi81ZTY0NGRiYS02YzVkLTVlM2EtOTNlZS0xOWY4YWZlOWJhNWQ="
+    ],
+    "pub_date": "2019-12-05T00:00:00.000Z",
+    "byline": "By Lynn Vavreck, John Sides and Chris Tausanovitch",
+    "interactive": false,
+    "data_viz": {
+      "chart_types": ["scatter"],
+      "color_use": ["categorical"],
+      "interaction_types": ["hover"],
+      "data": ["%"]
+    },
+    "first_of_type": true
+  }
+}
+```
 
-The trickiest part may have been the Times Tags. I experimented with a lot before I landed on the scrolling wheel. No matter what I did, it felt like a wall of text in a really bad way. It was hard to make the tags feel evenly spaced and aligned. Having a giant circle ended up being just the thing I needed to have a list that didn't feel so... listy? The tricky part once I landed there was using a scroll event listener to be able to scroll through the topics.
+## Times Tags
 
-If I had more time, I would add more ways to iiinteract with the stories themselves. Currently there are no links to the stories, and I think it would be nice for those to be part of it.
+```json
+{
+  "nyt://subject/ab2ce501-c350-5a1b-84b6-207da603c658": {
+    "__typename": "Subject",
+    "displayName": "Trump-Ukraine Whistle-Blower Complaint and Impeachment Inquiry",
+    "promotionalMedia": null,
+    "uri": "nyt://subject/ab2ce501-c350-5a1b-84b6-207da603c658",
+    "works": [
+      "https://www.nytimes.com/2019/12/05/upshot/impeachment-biggest-issue-voters-poll.html",
+      "https://www.nytimes.com/2019/10/21/upshot/polls-impeachment-battlegrounds-Trump.html",
+      "https://www.nytimes.com/2019/11/27/upshot/impeachment-facts-faq-thanksgiving.html",
+      ...
+    ]
+  },
+}
+```
+
+## Credits (journalists)
+
+```json
+{
+   "UGVyc29uOm55dDovL3BlcnNvbi82MjM2NTY3My0zYjM0LTUwZTktODMyMi02OWM1NTMxODFjNGI=": {
+    "id": "UGVyc29uOm55dDovL3BlcnNvbi82MjM2NTY3My0zYjM0LTUwZTktODMyMi02OWM1NTMxODFjNGI=",
+    "displayName": "Nate Cohn",
+    "bioUrl": "https://www.nytimes.com/by/nate-cohn",
+    "promotionalMedia": {
+      "width": 640,
+      "height": 640,
+      "url": "https://static01.nyt.com/images/2018/06/13/multimedia/author-nate-cohn/author-nate-cohn-square640.jpg",
+      "name": "square640"
+    },
+    "works": [
+      "https://www.nytimes.com/2019/10/21/upshot/polls-impeachment-battlegrounds-Trump.html",
+      "https://www.nytimes.com/2019/08/07/upshot/trump-approval-rating-rise.html",
+      ...
+    ]
+  }
+}
+```
+
+## Others
+
+There are also various json files to list works based on chart type, color use, and interaction types.
