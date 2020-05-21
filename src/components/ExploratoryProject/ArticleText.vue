@@ -65,12 +65,12 @@ export default {
 
 h3 {
   line-height: 1.2em;
-  font-size: 0.95em;
+  font-size: 1.5em;
   font-style: italic;
   margin: 0;
 }
 
 p {
-  font-size: 0.8em;
+  font-size: 1.2em;
 }
 </style>

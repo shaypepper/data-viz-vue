@@ -29,9 +29,9 @@
               v-if="highlightedBarUrl === tag.uri"
               height="2"
               width="2"
+              font-size="2"
               y="1.3"
               :x="-tag.works.length / 2 - 3"
-              style="font-size:2"
             >
               {{ tag.works.length }}
             </text>

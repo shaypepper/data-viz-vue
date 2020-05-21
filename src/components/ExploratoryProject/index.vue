@@ -123,7 +123,7 @@ export default {
   box-sizing: border-box;
 
   display: grid;
-  grid-template-columns: 0.75fr 1fr 1fr;
+  grid-template-columns: 3fr 3fr 5fr;
   grid-template-rows: 0.75fr 1fr 1fr 0.75fr;
   grid-gap: 12px;
   position: relative;
