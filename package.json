@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/d3": "^5.7.2",
     "@types/scrollmagic": "^2.0.0",
     "core-js": "^3.6.4",
     "d3": "^5.15.1",
@@ -22,6 +23,7 @@
     "vue": "^2.6.11",
     "vue-csv-import": "^3.1.0",
     "vue-debounce": "^2.5.3",
+    "vue-filter-number-format": "^3.0.1",
     "vue-fragment": "^1.5.1",
     "vue-router": "^3.2.0",
     "vue-scrollmagic": "^1.2.0"
