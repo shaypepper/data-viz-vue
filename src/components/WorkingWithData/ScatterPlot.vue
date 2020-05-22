@@ -1,31 +1,33 @@
 <template>
-  <svg :viewBox="`-10 -10 ${chartSize + 20} ${chartSize + 20}`">
-    <g class="points">
-      <g class="point" v-for="v of allVerbs" :key="v.verb">
-        <circle
-          :cx="v.position[0]"
-          :cy="v.position[1]"
-          @mouseover="() => showTooltip(v)"
-          @mouseleave="hideTooltip"
-          fill="black"
-          r="2"
-        />
+  <div class="container">
+    <svg :viewBox="`-10 -10 ${chartSize + 20} ${chartSize + 20}`">
+      <g class="points">
+        <g class="point" v-for="v of allVerbs" :key="v.verb">
+          <circle
+            :cx="v.position[0]"
+            :cy="v.position[1]"
+            @mouseover="() => showTooltip(v)"
+            @mouseleave="hideTooltip"
+            fill="black"
+            r="2"
+          />
+        </g>
       </g>
-    </g>
-    <g
-      class="tooltip"
-      :opacity="tooltipIsVisible ? 1 : 0"
-      :transform="`translate(${tooltipPosition[0] +  3}, ${tooltipPosition[1] + 3})`"
-    >
-      <rect width="20" height="20" fill="white" />
-      <text font-size="10" y="20">{{tooltipVerb}}</text>
-    </g>
-    <g class="axes">
-      <path :d="`M0,0 v${chartSize}`" stroke="black" />
-      <path :d="`M0,${chartSize} h${chartSize}`" stroke="black" />
-      <path :d="`M0,${chartSize} l${chartSize - 2},-${chartSize - 2}`" stroke="black" />
-    </g>
-  </svg>
+      <g
+        class="tooltip"
+        :opacity="tooltipIsVisible ? 1 : 0"
+        :transform="`translate(${tooltipPosition[0] +  3}, ${tooltipPosition[1] + 3})`"
+      >
+        <rect width="20" height="20" fill="white" />
+        <text font-size="10" y="20">{{tooltipVerb}}</text>
+      </g>
+      <g class="axes">
+        <path :d="`M0,0 v${chartSize}`" stroke="black" />
+        <path :d="`M0,${chartSize} h${chartSize}`" stroke="black" />
+        <path :d="`M0,${chartSize} l${chartSize - 2},-${chartSize - 2}`" stroke="black" />
+      </g>
+    </svg>
+  </div>
 </template>
 
 <script>

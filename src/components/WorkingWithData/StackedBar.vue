@@ -1,55 +1,54 @@
 <template>
-  <div>
+  <div class="container">
     <svg :viewBox="`-10 -10 ${W + 20} ${H + 20}`">
       <g
         v-for="(data, articleType, i) in tenses"
         :key="articleType"
         :transform="`translate(${(1 - i) * (W / 2 + M)}, 0)`"
       >
-        <text y="-2" x="1.5" class="article-type">
-          {{ articleType[0].toUpperCase() + articleType.slice(1) }}
-        </text>
+        <text
+          y="-2"
+          x="1.5"
+          class="article-type"
+        >{{ articleType[0].toUpperCase() + articleType.slice(1) }}</text>
         <g
-          v-for="(tense, j) in data"
+          v-for="tense in data"
           :key="tense.name"
           :transform="`translate( 0,${tense.start * H})`"
+          :class="tense.name"
         >
-          <rect
-            :height="tense.p * H"
-            :width="BW"
-            stroke="white"
-            stroke-width="0.5"
-            fill="white"
-          />
+          <rect :height="tense.p * H" :width="BW" stroke="white" stroke-width="0.5" fill="white" />
           <text y="5" x="2" class="tense-name">
             {{
-              verbs[tense.name].label[6].toUpperCase() +
-                verbs[tense.name].label.slice(7)
+            verbs[tense.name].label[6].toUpperCase() +
+            verbs[tense.name].label.slice(7)
             }}
             - {{ Math.floor(tense.p * 1000) / 10 }}%
           </text>
-          <text y="8" x="2" class="tense-examples">
+          <text v-if="tense.name !== 'VBP'" y="8" x="2" class="tense-examples">
             Top 10:
             {{ verbs[tense.name][articleType].map((d) => d[0]).join(", ") }}
           </text>
-
+        </g>
+        <g v-if="articleType === 'reporting'">
           <path
+            :class="`lasso ${tense.name}`"
             style="z-index: -1;"
-            v-if="articleType === 'reporting'"
+            v-for="(tense, j) in data"
+            :key="tense.name"
             :d="
-              `M0,0 h${BW} l${DM},${(tenses.opinion[j].start - tense.start) *
+              `M0,${tense.start * H} h${BW} l${DM},${(tenses.opinion[j].start -
+                tense.start) *
                 H} h${BW} v${tenses.opinion[j].p *
                 H} h-${BW} l${-DM}, ${(tense.end - tenses.opinion[j].end) *
                 H} h-${BW} Z`
-            "
-            :fill="
-              ['red', 'yellow', 'steelblue', 'coral', 'hotpink', 'green'][j]
             "
             opacity="0.2"
             stroke="white"
           />
         </g>
       </g>
+
       <rect :x="BW" :height="W" :width="DM" fill="rgba(255, 255, 255, 0.5)" />
     </svg>
   </div>
@@ -58,30 +57,55 @@
 import opinionVerbTenses from "./data/opinion_verb_tenses.json";
 import reportingVerbTenses from "./data/reporting_verb_tenses.json";
 import verbs from "./data/verbs.json";
+import gsap from "gsap";
+
+const H = 100, // svg height
+  W = 175, // svg width
+  M = 4; // svg margins
+const BH = H / 2 - M, // bar height
+  BW = W / 2 - M, // bar width
+  DM = M * 2; // double margin
 
 const StackedBar = {
+  mounted() {
+    const tl = gsap.timeline();
+
+    tl.from(".lasso", {
+      attr: {
+        d: `M0,0 h${BW} l${M},0 h${BW} v0.01 h${-BW} l${-M},0 h${-BW} Z`
+      },
+      duration: 0.75
+    });
+    tl.from("text", {
+      opacity: 0,
+      duration: 0.75
+    });
+  },
+  methods: {
+    showPastTense() {
+      const tl = gsap.timeline();
+      tl.to(`text`, {
+        opacity: 0,
+        duration: 0.75
+      });
+      tl.to(".lasso", {
+        attr: {
+          d: `M0,0 h${BW} l${M},0 h${BW} v${H} h${-BW} l${-M},0 h${-BW} Z`
+        },
+        duration: 0.75
+      });
+    }
+  },
   created() {
+    Object.assign(this, { H, W, M, BH, BW, DM });
     this.verbs = { ...verbs };
-    this.H = 150; // svg height
-    this.W = 200; // svg width
-    this.M = 4; // svg margins
-    this.BH = this.H / 2 - this.M; // bar height
-    this.BW = this.W / 2 - this.M; // bar width
-    this.DM = this.M * 2; // double margin
 
     let currentPlace = {
       opinion: 0,
-      reporting: 0,
+      reporting: 0
     };
-    opinionVerbTenses.forEach(([name, , p]) => {
-      verbs[name].opinion.p = p;
-    });
 
-    reportingVerbTenses.forEach(([name, , p]) => {
-      verbs[name].reporting.p = p;
-    });
-
-    const mapVerbTense = (articleType) => ([name, count, p]) => {
+    const mapVerbTense = articleType => ([name, count, p]) => {
       const thing = { name, count, p };
       thing.start = currentPlace[articleType];
       thing.end = currentPlace[articleType] += p;
@@ -90,15 +114,16 @@ const StackedBar = {
 
     this.tenses = {
       opinion: opinionVerbTenses.map(mapVerbTense("opinion")),
-      reporting: reportingVerbTenses.map(mapVerbTense("reporting")),
+      reporting: reportingVerbTenses.map(mapVerbTense("reporting"))
     };
-  },
+  }
 };
 
 export default StackedBar;
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/css/color-scheme.scss";
 text {
   fill: black;
   &.tense-examples {
@@ -113,5 +138,48 @@ text {
     font-size: 5px;
     font-style: italic;
   }
+}
+
+svg {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lasso {
+  transition: opacity 400ms ease;
+  fill: var(--color);
+  &:hover {
+    opacity: 0.3;
+  }
+}
+
+.VBD {
+  @extend .purple;
+}
+
+.VB {
+  @extend .orange;
+}
+
+.VBN {
+  @extend .yellow;
+}
+
+.VBG {
+  @extend .red;
+}
+
+.VBZ {
+  @extend .blue;
+}
+
+.VBP {
+  @extend .green;
 }
 </style>
