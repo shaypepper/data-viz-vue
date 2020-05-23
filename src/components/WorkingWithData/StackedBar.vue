@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <svg :viewBox="`-10 -10 ${W + 20} ${H + 20}`">
+    <svg :viewBox="`0 -10 ${W} ${H + 20}`">
       <g
         v-for="(data, articleType, i) in tenses"
         :key="articleType"
@@ -20,14 +20,13 @@
           <rect :height="tense.p * H" :width="BW" stroke="white" stroke-width="0.5" fill="white" />
           <text y="5" x="2" class="tense-name">
             {{
-            verbs[tense.name].label[6].toUpperCase() +
-            verbs[tense.name].label.slice(7)
+            verbs[tense.name].label
             }}
             - {{ Math.floor(tense.p * 1000) / 10 }}%
           </text>
           <text v-if="tense.name !== 'VBP'" y="8" x="2" class="tense-examples">
             Top 10:
-            {{ verbs[tense.name][articleType].map((d) => d[0]).join(", ") }}
+            {{ Object.keys(verbs[tense.name][articleType]).join(", ") }}
           </text>
         </g>
         <g v-if="articleType === 'reporting'">
@@ -59,9 +58,9 @@ import reportingVerbTenses from "./data/reporting_verb_tenses.json";
 import verbs from "./data/verbs.json";
 import gsap from "gsap";
 
-const H = 100, // svg height
-  W = 175, // svg width
-  M = 4; // svg margins
+const H = 160, // svg height
+  W = 225, // svg width
+  M = 8; // svg margins
 const BH = H / 2 - M, // bar height
   BW = W / 2 - M, // bar width
   DM = M * 2; // double margin
@@ -116,6 +115,7 @@ const StackedBar = {
       opinion: opinionVerbTenses.map(mapVerbTense("opinion")),
       reporting: reportingVerbTenses.map(mapVerbTense("reporting"))
     };
+    console.log("this.tenses", this.tenses);
   }
 };
 
@@ -124,6 +124,9 @@ export default StackedBar;
 
 <style lang="scss" scoped>
 @import "../../assets/css/color-scheme.scss";
+.container {
+  grid-column: 1 / -1;
+}
 text {
   fill: black;
   &.tense-examples {
@@ -136,13 +139,7 @@ text {
   }
   &.article-type {
     font-size: 5px;
-    font-style: italic;
   }
-}
-
-svg {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 div {

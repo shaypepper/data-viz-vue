@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="button-bar">
+    <div>
+      <h2>How do the verbs get used in articles?</h2>
+      <p>These are randomly generated quotes from New York Times articles. Toggle between verbs and nouns to see more. Click on any quote to see the corresponding article</p>
       <p>
         Noun:
         <button
@@ -116,18 +118,16 @@ export default {
 
 .container {
   display: grid;
+  grid-column: 1/-1;
   grid-template-columns: 1fr 1fr;
   grid-gap: 26px;
-  padding: 6vw;
-
-  * {
-    max-width: 1200px;
+  > *:first-child {
+    grid-column: 1 / -1;
   }
 }
 
 h2 {
   font-size: 28px;
-  font-style: italic;
 }
 
 button {
@@ -148,6 +148,10 @@ button {
 .button-bar {
   grid-column: 1 / -1;
   //   display: flex;
+}
+
+p {
+  margin-bottom: 24px;
 }
 
 a {
