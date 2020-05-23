@@ -13,10 +13,7 @@
         passed. This is a tribute to his work.
       </p>
     </div>
-    <bar-chart
-      v-bind="{ events, startDate, endDate }"
-      v-on:select-range="updateDateRange"
-    ></bar-chart>
+    <bar-chart v-bind="{ events, startDate, endDate }" v-on:select-range="updateDateRange"></bar-chart>
     <manhattan-map
       v-bind="{ events, locations, startDate, endDate }"
       v-on:hover-on-event="updateHoveredEvent"
@@ -41,7 +38,7 @@ export default {
     ManhattanMap,
     ArticleText,
     NightengalesRose,
-    BarChart,
+    BarChart
     // TreeMap
   },
   data() {
@@ -54,14 +51,14 @@ export default {
         longitude: null,
         state: null,
         date: "2013-11-17",
-        role: "end",
+        role: "end"
       },
       startDate: new Date("2004-06-20"),
       endDate: new Date("2009-07-18"),
       currentDate: "2016-06-12",
       playSpeed: 200,
       playMode: false,
-      editingSelection: false,
+      editingSelection: false
     };
   },
   methods: {
@@ -73,7 +70,7 @@ export default {
       const maxDate = new Date(Math.max(startDate, endDate));
       this.startDate = minDate;
       this.endDate = maxDate;
-    },
+    }
   },
   mounted() {
     Promise.all([
@@ -84,19 +81,19 @@ export default {
       d3.csv(
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vQoU4ruZLXAnoFJOM3HCS1jI2EQy_TPvMQomJRi6i8sFROBlcE_Lz5o7745ilDCpYumiUwbC02M-zWH/pub?gid=1301057910&single=true&output=csv",
         d3.autoType
-      ),
+      )
     ]).then(([locations, events]) => {
       console.table(locations);
       console.table(events);
       // SET STATE WITH DATA
 
       this.locations = new Map(
-        locations.map((location) => [
+        locations.map(location => [
           location.place,
-          { longitude: location.longitude, latitude: location.latitude },
+          { longitude: location.longitude, latitude: location.latitude }
         ])
       );
-      this.publishDates = new Set(events.map((a) => a.publishDate.toString()));
+      this.publishDates = new Set(events.map(a => a.publishDate.toString()));
 
       this.events = events.map((a, i) => {
         a.index = i;
@@ -104,7 +101,7 @@ export default {
       });
     });
     return;
-  },
+  }
 };
 </script>
 
@@ -127,6 +124,11 @@ export default {
   grid-template-rows: 0.75fr 1fr 1fr 0.75fr;
   grid-gap: 12px;
   position: relative;
+
+  h1 {
+    font-style: italic;
+    font-weight: 400;
+  }
 
   #manhattanMap {
     position: absolute;

@@ -3,7 +3,7 @@
     <div v-if="event">
       <h3>{{ formattedEventDate }}</h3>
       <p>{{ eventText }}</p>
-      <p>Published {{ formattedPublishDate }}</p>
+      <p v-if="formattedPublishDate">Published {{ formattedPublishDate }}</p>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ const monthParser = d3.timeFormat("%m");
 export default {
   name: "articletext",
   props: {
-    event: Object,
+    event: Object
   },
   data() {
     return {};
@@ -45,15 +45,16 @@ export default {
       );
     },
     formattedPublishDate() {
+      if (!+this.event.publishDate) return false;
       return d3.timeFormat("%B %_d")(this.event.publishDate);
     },
     formattedEventDate() {
-      if (!this.event) {
+      if (!+this.parsedEventDate) {
         return "This page is interactive.";
       }
-      return d3.timeFormat("%A %B %e, %Y")(this.parsedEventDate);
-    },
-  },
+      return d3.timeFormat("%a. %B %e, %Y")(this.parsedEventDate);
+    }
+  }
 };
 </script>
 

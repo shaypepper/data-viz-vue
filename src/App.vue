@@ -6,16 +6,14 @@
 
 <script>
 export default {
-  name: "App",
+  name: "App"
 };
 </script>
 
 <style>
-@import "./assets/css/nyt-fonts.scss";
-
 body {
   background-color: rgb(30, 30, 30);
-  font-family: "nyt-cheltenham";
+  font-family: "Caladea", serif;
   margin: 0;
 }
 </style>
