@@ -1,36 +1,34 @@
 <template>
   <div class="container">
-    <svg :viewBox="`-15 -5 ${chartSize + 30} ${chartSize + 10}`">
-      <g class="axes" stroke="gainsboro" stroke-width="0.2">
+    <h2>Most common verbs by article type</h2>
+    <svg :viewBox="`0 -5 ${chartSize + 30} ${chartSize + 10}`">
+      <g class="axes">
+        <g
+          class="annotation"
+          font-size="2"
+          stroke="none"
+          :transform="`translate(${chartSize - 15}, 15)`"
+        >
+          <text y="2" x="-3.5" font-size="3">&nwarr;</text>
+          <text y="-1" transform="rotate(-45)">More frequent in Reporting</text>
+          <text y="3" x="-2.5" font-size="3">&searr;</text>
+          <text y="2" transform="rotate(-45)">More frequent in Opinion</text>
+        </g>
         <path :d="`M0,0 v${chartSize} h${chartSize} `" fill="none" />
         <path :d="`M0,${chartSize} l${chartSize},-${chartSize}`" stroke-dasharray="2 1" />
-        <text
-          font-size="4"
-          :x="chartSize - 62"
-          y="-1"
-          stroke="none"
-        >&larr; Verbs more common in Reporting</text>
-
-        <text
-          transform="rotate(90)"
-          font-size="4"
-          :y="-chartSize -1"
-          x="2"
-          stroke="none"
-        >Verbs more common in Opinion &rarr;</text>
       </g>
       <g class="points">
         <g
-          :class="`point ${v.verb}`"
+          :class="`point ${v.verb} ${v.tense} ${pinned[v.verb] ? 'pinned': ''}`"
           v-for="v of allVerbs"
           :key="v.verb"
           :transform="`translate(${v.position[0]}, ${v.position[1]})`"
           @mouseover="() => showTooltip(v)"
           @mouseleave="hideTooltip"
         >
-          <circle fill="black" r="0.5" />
+          <circle class="dot" fill="red" r="1" />
           <circle fill="transparent" r="3" />
-          <g class=".tooltip" :transform="`translate(${v.verb === 'is' ?-15 :0}, -6.5)`">
+          <g :transform="pinned[v.verb] || pinned.other">
             <text font-size="6" y="0" x="1">{{v.verb}}</text>
             <text font-size="2" y="3" x="1">{{v.stats.reporting}}</text>
             <text font-size="2" y="6" x="1">{{v.stats.opinion}}</text>
@@ -45,6 +43,13 @@
 import verbs from "./data/verbs.json";
 import * as d3 from "d3";
 const chartSize = 100;
+const pinned = {
+  is: "translate(-6.5,0)",
+  has: "translate(-12.5,0)",
+  was: "translate(-6,-8.5)",
+  said: "translate(0,-6.5)",
+  other: "translate(0,-6.5)"
+};
 
 export default {
   data() {
@@ -64,8 +69,19 @@ export default {
         p
       )}`;
     };
-    Object.entries(verbs.all.opinion).forEach(addVerb("opinion"));
-    Object.entries(verbs.all.reporting).forEach(addVerb("reporting"));
+    Object.entries(verbs.all.opinion)
+      .slice(0, 20)
+      .forEach(addVerb("opinion"));
+    Object.entries(verbs.all.reporting)
+      .slice(0, 20)
+      .forEach(addVerb("reporting"));
+
+    Object.entries(verbs).forEach(([code, { opinion, reporting }]) => {
+      if (code === "all") return;
+      for (let verb in { ...opinion, ...reporting }) {
+        if (allVerbs[verb]) allVerbs[verb].tense = code;
+      }
+    });
 
     const domain = [0, maxP].map(d => d);
 
@@ -111,14 +127,29 @@ export default {
     prettyPercent(val) {
       return `${Math.floor(val * 1000) / 10}%`;
     }
+  },
+  created() {
+    this.pinned = pinned;
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.annotation {
+  font-family: nyt-franklin;
+  font-weight: 400;
+}
+.axes {
+  stroke: rgb(143, 143, 143);
+  stroke-width: 0.2;
+}
 .point {
   circle {
     opacity: 0.3;
+    transition: opacity 400ms;
+  }
+  .dot {
+    fill: var(--color);
   }
   text {
     visibility: hidden;
@@ -127,13 +158,14 @@ export default {
       font-family: nyt-franklin;
     }
   }
-  &:hover {
+  &:hover,
+  &.pinned {
     circle {
       opacity: 1;
     }
     text {
       visibility: visible;
-      text-shadow: 0px 0px 20px yellow;
+      text-shadow: 0px 0px 20px var(--color);
       opacity: 1;
       z-index: 1;
     }

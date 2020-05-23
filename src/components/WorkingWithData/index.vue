@@ -1,6 +1,7 @@
 <template>
   <div id="verbs">
     <h1>Verb tenses in The New York Times</h1>
+    <scatter-plot />
     <div>
       <p>
         In a world where Americans have trouble telling the difference
@@ -22,7 +23,7 @@
       </p>
       <p>Looking more broadly at use of any verb tenses, I was able to see a couple of patterns. First, I noticed that reporting tended to include more past tense verbs. Additionally, opinion pieces were more likely to use non-3rd person singular present verbs. A clear example of this is the word "is". Opinion pieces are much more likely to use the word perhaps because pinion columns are a place where authors are more free to make judgments about instiutions, people, and presidents. If you look below at how "is" is used, you can easily infer that this is the reason why.</p>
     </div>
-    <scatter-plot />
+
     <stacked-bar />
     <compare-quotes />
   </div>
@@ -56,6 +57,36 @@ export default {
   h1 {
     grid-column: 1 /-1;
     font-style: italic;
+  }
+
+  h3 {
+    font-family: nyt-franklin;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .VBD {
+    @extend .purple;
+  }
+
+  .VB {
+    @extend .orange;
+  }
+
+  .VBN {
+    @extend .yellow;
+  }
+
+  .VBG {
+    @extend .red;
+  }
+
+  .VBZ {
+    @extend .blue;
+  }
+
+  .VBP {
+    @extend .green;
   }
 }
 </style>

@@ -1,16 +1,13 @@
 <template>
   <div class="container">
+    <h2>How do verb tenses vary by article type?</h2>
     <svg :viewBox="`0 -10 ${W} ${H + 20}`">
       <g
         v-for="(data, articleType, i) in tenses"
         :key="articleType"
         :transform="`translate(${(1 - i) * (W / 2 + M)}, 0)`"
       >
-        <text
-          y="-2"
-          x="1.5"
-          class="article-type"
-        >{{ articleType[0].toUpperCase() + articleType.slice(1) }}</text>
+        <text y="-1.5" x="0" class="article-type">{{ articleType }}</text>
         <g
           v-for="tense in data"
           :key="tense.name"
@@ -18,23 +15,19 @@
           :class="tense.name"
         >
           <rect :height="tense.p * H" :width="BW" stroke="white" stroke-width="0.5" fill="white" />
-          <text y="5" x="2" class="tense-name">
-            {{
-            verbs[tense.name].label
-            }}
-            - {{ Math.floor(tense.p * 1000) / 10 }}%
-          </text>
-          <text v-if="tense.name !== 'VBP'" y="8" x="2" class="tense-examples">
-            Top 10:
-            {{ Object.keys(verbs[tense.name][articleType]).join(", ") }}
-          </text>
+          <g transform="translate(2.5, 6.5)">
+            <text class="tense-name">{{tense.label}}</text>
+            <text v-if="tense.name !== 'VBP'" y="5" class="tense-examples">{{ tense.first5 }}</text>
+            <text v-if="tense.name !== 'VBP'" y="8.5" class="tense-examples">{{ tense.next5 }}</text>
+          </g>
         </g>
+
         <g v-if="articleType === 'reporting'">
           <path
-            :class="`lasso ${tense.name}`"
-            style="z-index: -1;"
             v-for="(tense, j) in data"
             :key="tense.name"
+            :class="`lasso ${tense.name}`"
+            style="z-index: -1;"
             :d="
               `M0,${tense.start * H} h${BW} l${DM},${(tenses.opinion[j].start -
                 tense.start) *
@@ -57,6 +50,7 @@ import opinionVerbTenses from "./data/opinion_verb_tenses.json";
 import reportingVerbTenses from "./data/reporting_verb_tenses.json";
 import verbs from "./data/verbs.json";
 import gsap from "gsap";
+import Fragment from "vue-fragment";
 
 const H = 160, // svg height
   W = 225, // svg width
@@ -66,6 +60,9 @@ const BH = H / 2 - M, // bar height
   DM = M * 2; // double margin
 
 const StackedBar = {
+  components: {
+    Fragment
+  },
   mounted() {
     const tl = gsap.timeline();
 
@@ -80,21 +77,6 @@ const StackedBar = {
       duration: 0.75
     });
   },
-  methods: {
-    showPastTense() {
-      const tl = gsap.timeline();
-      tl.to(`text`, {
-        opacity: 0,
-        duration: 0.75
-      });
-      tl.to(".lasso", {
-        attr: {
-          d: `M0,0 h${BW} l${M},0 h${BW} v${H} h${-BW} l${-M},0 h${-BW} Z`
-        },
-        duration: 0.75
-      });
-    }
-  },
   created() {
     Object.assign(this, { H, W, M, BH, BW, DM });
     this.verbs = { ...verbs };
@@ -108,6 +90,13 @@ const StackedBar = {
       const thing = { name, count, p };
       thing.start = currentPlace[articleType];
       thing.end = currentPlace[articleType] += p;
+      thing.label = `${verbs[name].label} - ${Math.floor(p * 1000) / 10}%`;
+      thing.first5 = `Top 10: ${Object.keys(verbs[name][articleType])
+        .slice(0, 5)
+        .join(", ")},`;
+      thing.next5 = Object.keys(verbs[name][articleType])
+        .slice(5)
+        .join(", ");
       return thing;
     };
 
@@ -115,7 +104,6 @@ const StackedBar = {
       opinion: opinionVerbTenses.map(mapVerbTense("opinion")),
       reporting: reportingVerbTenses.map(mapVerbTense("reporting"))
     };
-    console.log("this.tenses", this.tenses);
   }
 };
 
@@ -127,18 +115,24 @@ export default StackedBar;
 .container {
   grid-column: 1 / -1;
 }
+h2 {
+  text-align: left;
+  width: 100%;
+}
 text {
   fill: black;
   &.tense-examples {
-    font-size: 2px;
+    font-size: 3px;
     font-family: nyt-franklin;
   }
   &.tense-name {
-    font-size: 3px;
+    font-size: 4.5px;
     font-family: nyt-cheltenham;
   }
   &.article-type {
-    font-size: 5px;
+    font-size: 3px;
+    font-family: nyt-franklin;
+    text-transform: uppercase;
   }
 }
 
@@ -154,29 +148,5 @@ div {
   &:hover {
     opacity: 0.3;
   }
-}
-
-.VBD {
-  @extend .purple;
-}
-
-.VB {
-  @extend .orange;
-}
-
-.VBN {
-  @extend .yellow;
-}
-
-.VBG {
-  @extend .red;
-}
-
-.VBZ {
-  @extend .blue;
-}
-
-.VBP {
-  @extend .green;
 }
 </style>

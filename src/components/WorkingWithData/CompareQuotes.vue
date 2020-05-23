@@ -26,11 +26,15 @@
           :class="`purple ${verb === 'was' && 'selected'}`"
           @click="() => updateVerb('was')"
         >was</button>
+        <button
+          :class="`purple ${verb === 'said' && 'selected'}`"
+          @click="() => updateVerb('said')"
+        >said</button>
       </p>
     </div>
 
     <div :class="verb">
-      <h2>Reporting</h2>
+      <h3>Reporting</h3>
       <p v-for="([quote, url], i) in reportingStatements" :key="url + i">
         <a :href="url" target="_blank">
           {{quote[0]}}
@@ -40,7 +44,7 @@
       </p>
     </div>
     <div :class="verb">
-      <h2>Opinion</h2>
+      <h3>Opinion</h3>
       <p v-for="([quote, url], i) in opinionStatements" :key="url + i">
         <a :href="url" target="_blank">
           {{quote[0]}}
@@ -126,13 +130,11 @@ export default {
   }
 }
 
-h2 {
-  font-size: 28px;
-}
-
 button {
   color: white;
   border-radius: 4px;
+  border: none;
+  margin: 2px;
   font-size: 14px;
   padding: 5px 10px;
   text-transform: uppercase;
@@ -169,7 +171,8 @@ a {
 .has {
   @extend .blue;
 }
-.was {
+.was,
+.said {
   @extend .purple;
 }
 </style>
