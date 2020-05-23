@@ -1,0 +1,20 @@
+# Working with Data - Spring 2020
+
+Shay Culpepper
+
+## Final Project - Verb tenses in The New York Times
+
+[See report here](https://shaypepper.github.io/data-viz-vue/#/verbs)
+
+[Data and analysis files](https://github.com/shaypepper/data-viz-vue/tree/master/src/components/WorkingWithData/data)
+
+## Assignments
+
+Assignments 1-3 were emails earlier in the semester
+
+- [How-to notebook](https://colab.research.google.com/drive/112twYJskdGI7HgrtAeJfq1sG2gRtSX1C) (#4)
+- [Twitter analysis](https://colab.research.google.com/drive/1EXGHeOo0rrXesOEqv8sR4OuNMiAAwm6y) (#5, #7)
+- [Code sample](https://github.com/shaypepper/data-viz-vue/docs/code_samples/news_scraping/extract_places.js) (#6)
+- [News analysis](https://github.com/shaypepper/data-viz-vue/docs/code_samples/news_scraping/index.js) and [visualization was for another course](https://shaypepper.github.io/data-viz-vue/#bill) (#8)
+- [Classification task](https://colab.research.google.com/drive/1I82ZkJSbjuOhkQwdomxAWEvF3ltIFRyj#scrollTo=V_tqakHMS6MY) (#9)
+- [Final Project commentary](https://www.github.com/shaypepper/data-viz-vue/docs/ProjectCommentary.md) (#10)
