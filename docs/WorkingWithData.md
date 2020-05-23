@@ -17,4 +17,4 @@ Assignments 1-3 were emails earlier in the semester
 - [Code sample](https://github.com/shaypepper/data-viz-vue/docs/code_samples/news_scraping/extract_places.js) (#6)
 - [News analysis](https://github.com/shaypepper/data-viz-vue/docs/code_samples/news_scraping/index.js) and [visualization was for another course](https://shaypepper.github.io/data-viz-vue/#bill) (#8)
 - [Classification task](https://colab.research.google.com/drive/1I82ZkJSbjuOhkQwdomxAWEvF3ltIFRyj#scrollTo=V_tqakHMS6MY) (#9)
-- [Final Project commentary](https://www.github.com/shaypepper/data-viz-vue/docs/ProjectCommentary.md) (#10)
+- [Final Project commentary](https://www.github.com/shaypepper/data-viz-vue/docs/code_samples/ProjectCommentary.md) (#10)
