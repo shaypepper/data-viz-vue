@@ -132,10 +132,10 @@ export default Component;
 main {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  // background-color: rgb(10, 10, 10);
-}
-
-#intro {
+  h1 {
+    font-style: italic;
+    font-size: 36px;
+  }
 }
 
 .textBox {
@@ -147,9 +147,7 @@ main {
   padding: 0 calc(max(50vw - 50vmin, 10vmin));
 
   h1 {
-    font-family: nyt-cheltenham;
     font-style: italic;
-    font-weight: 700;
     font-size: 36px;
   }
   p {

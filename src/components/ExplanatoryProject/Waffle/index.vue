@@ -235,9 +235,7 @@ export default {
     transition: opacity ease-in-out 400ms, fill ease-in-out 400ms;
   }
   h1 {
-    font-family: nyt-cheltenham;
     font-style: italic;
-    font-weight: 700;
     font-size: 36px;
   }
   p {

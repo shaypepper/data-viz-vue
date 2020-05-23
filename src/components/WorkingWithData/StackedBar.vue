@@ -123,15 +123,14 @@ text {
   fill: black;
   &.tense-examples {
     font-size: 3px;
-    font-family: nyt-franklin;
+    font-family: "Assistant", sans-serif;
   }
   &.tense-name {
     font-size: 4.5px;
-    font-family: nyt-cheltenham;
   }
   &.article-type {
     font-size: 3px;
-    font-family: nyt-franklin;
+    font-family: "Assistant", sans-serif;
     text-transform: uppercase;
   }
 }

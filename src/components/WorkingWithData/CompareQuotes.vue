@@ -3,7 +3,7 @@
     <div>
       <h2>How do the verbs get used in articles?</h2>
       <p>These are randomly generated quotes from New York Times articles. Toggle between verbs and nouns to see more. Click on any quote to see the corresponding article</p>
-      <p>
+      <p class="button-bar">
         Noun:
         <button
           :class="noun === '[Pp]resident' && 'selected'"
@@ -15,7 +15,7 @@
           @click="() => updateNoun('[Aa]dministration')"
         >Administration</button>
       </p>
-      <p>
+      <p class="button-bar">
         Verb:
         <button
           :class="`blue ${verb === 'is' && 'selected'}`"
@@ -130,30 +130,35 @@ export default {
   }
 }
 
-button {
-  color: white;
-  border-radius: 4px;
-  border: none;
-  margin: 2px;
-  font-size: 14px;
-  padding: 5px 10px;
-  text-transform: uppercase;
-  background-color: var(--color);
-  opacity: 0.4;
-  text-shadow: rgb(100, 100, 100) 0px 0px 3px;
-
-  &.selected {
-    opacity: 1;
-  }
-}
-
 .button-bar {
   grid-column: 1 / -1;
-  //   display: flex;
+
+  font-family: "Assistant", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  button {
+    color: white;
+    border-radius: 4px;
+    border: none;
+    margin: 2px;
+    font-size: 14px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    background-color: var(--color);
+    opacity: 0.4;
+    font-weight: 400;
+    text-shadow: rgb(100, 100, 100) 0px 0px 3px;
+
+    &.selected {
+      opacity: 1;
+    }
+  }
 }
 
 p {
   margin-bottom: 24px;
+  font-weight: 400;
 }
 
 a {

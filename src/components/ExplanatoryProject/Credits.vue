@@ -4,20 +4,12 @@
       <fragment v-for="(c, i) in creditsAndWorks" :key="c && c.id">
         <div :class="`mediaContainer row-${i + 2} col-1`">
           <a :href="c.url || c.bioUrl" target="_blank">
-            <media-svg
-              :i="i"
-              :promotionalMedia="c.promotionalMedia"
-              :displayName="c.displayName"
-            ></media-svg>
+            <media-svg :i="i" :promotionalMedia="c.promotionalMedia" :displayName="c.displayName"></media-svg>
           </a>
         </div>
         <div :class="`mediaContainer row-1 col-${i + 2}`">
           <a :href="c.url || c.bioUrl" target="_blank">
-            <media-svg
-              :i="i"
-              :promotionalMedia="c.promotionalMedia"
-              :displayName="c.displayName"
-            ></media-svg>
+            <media-svg :i="i" :promotionalMedia="c.promotionalMedia" :displayName="c.displayName"></media-svg>
           </a>
           <h3>{{ c.displayName }}</h3>
         </div>
@@ -42,10 +34,7 @@
             <!-- <media-svg v-if="collab" :promotionalMedia="collab" maskType="square" /> -->
           </fragment>
 
-          <div
-            v-if="i >= j && collabs && collabs.length"
-            :class="`count  ${i === j && 'solo'}`"
-          >
+          <div v-if="i >= j && collabs && collabs.length" :class="`count  ${i === j && 'solo'}`">
             <p>{{ collabs.length }}</p>
           </div>
         </div>
@@ -64,19 +53,18 @@ const GRID_SIZE = 30;
 const Component = Vue.extend({
   components: {
     MediaSvg,
-    Fragment,
+    Fragment
   },
   data() {
     const creditsAndWorks = Object.values(credits)
-      .map((c) => {
+      .map(c => {
         return {
           ...c,
           works:
-            c.works &&
-            c.works.map((w) => works[w]).filter((w) => w.first_of_type),
+            c.works && c.works.map(w => works[w]).filter(w => w.first_of_type)
         };
       })
-      .filter((c) => c.works.length)
+      .filter(c => c.works.length)
       .sort((a, b) => b.works.length - a.works.length)
       .slice(0, GRID_SIZE);
 
@@ -87,20 +75,20 @@ const Component = Vue.extend({
       for (let j = 0; j < creditsAndWorks.length; j++) {
         collaborationMap[i][j] = [];
         if (i == j) continue;
-        creditsAndWorks[i].works.forEach((w) => {
+        creditsAndWorks[i].works.forEach(w => {
           if (creditsAndWorks[j].works.includes(w)) {
             soloProjects.delete(w);
             collaborationMap[i][j].push(w.promotionalMedia);
           }
         });
       }
-      collaborationMap[i][i] = [...soloProjects].map((w) => w.promotionalMedia);
+      collaborationMap[i][i] = [...soloProjects].map(w => w.promotionalMedia);
     }
     return {
       creditsAndWorks,
-      collaborationMap,
+      collaborationMap
     };
-  },
+  }
 });
 export default Component;
 </script>
@@ -110,7 +98,6 @@ export default Component;
 $grid-size: 30;
 
 h3 {
-  font-family: nyt-franklin;
   font-size: 18px;
 }
 
@@ -154,7 +141,6 @@ div.grid-4 {
 
     p {
       font-size: 40px;
-      font-family: nyt-karnak;
       font-weight: 900;
       text-shadow: rgb(100, 100, 100) 0px 0px 3px;
       color: white;

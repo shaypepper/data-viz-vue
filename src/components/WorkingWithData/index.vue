@@ -48,7 +48,7 @@ export default {
   background-color: white;
 
   width: calc(100vw - 20px);
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -60,9 +60,12 @@ export default {
   }
 
   h3 {
-    font-family: nyt-franklin;
+    font-family: "Assistant", sans-serif;
     text-transform: uppercase;
-    font-weight: 300;
+    font-weight: 800;
+  }
+  p {
+    line-height: 20px;
   }
 
   .VBD {

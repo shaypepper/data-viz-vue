@@ -43,7 +43,7 @@
             </g>
           </g>
         </g>
-        <g style="font-size: 1.5px; font-family: nyt-franklin; opacity: 0.7" fill="white">
+        <g style="font-size: 1.5px; opacity: 0.7" fill="white">
           <text y="-0.5" transform="rotate(21) translate(0 -60)">20 stories</text>
           <text y="9.5" transform="rotate(25) translate(0 -60)">40</text>
           <text y="19.5" transform="rotate(31) translate(0 -60)">60</text>
@@ -52,13 +52,7 @@
           <rect height="18.5" width="15" fill="rgba(210 210 210, 0.2)" />
           <g v-for="(tagType, i) in tagTypes" :key="tagType">
             <rect :y="`${i * 3 + 1}`" x="1" :class="tagType" height="1.5" width="1.5" />
-            <text
-              style="font-family: nyt-franklin"
-              x="3.5"
-              :y="`${1.25 + i * 3 + 1}`"
-              fill="black"
-              font-size="1.5"
-            >{{ tagType }}</text>
+            <text x="3.5" :y="`${1.25 + i * 3 + 1}`" fill="black" font-size="1.5">{{ tagType }}</text>
           </g>
         </g>
       </svg>

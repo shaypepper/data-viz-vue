@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div>
-      <h1>Chart Types</h1>
+      <h1 class="h1">Chart Types</h1>
       <p>
         While the team at The Upshot is endlessly creative,
         they still leaned on well executed basics to tell their stories.
@@ -34,4 +34,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
