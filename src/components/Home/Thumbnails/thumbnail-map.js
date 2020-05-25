@@ -5,7 +5,7 @@ export const layout = [
   { 3: "bubble", 4: "tags", 5: "nightengale" }, // 3
   { 3: "github", 4: "mousse", 5: "upshot", 6: "decades" }, //4
   { 3: "resume", 4: "euler", 5: "linechart", 6: "highlights" }, // 5
-  { 6: "stacked-bar", 5: "manhattan", 4: "calcudoku-menu", 7: "shoe" }, // 6
+  { 6: "stacked-bar", 5: "manhattan", 4: "calcudoku-menu" }, // 6
   { 4: "playlist", 5: "india", 6: "calcudoku" }, // 7
   { 6: "shoe" },
 ];
