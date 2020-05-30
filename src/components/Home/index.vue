@@ -65,11 +65,6 @@ export default {
     }
   },
   created() {
-    // this.windowWidth = window.innerWidth;
-    // this.brickWidth = Math.min(window.innerWidth / 3, 200);
-    // this.brickHeight = this.brickWidth / 2;
-    // this.gap = this.brickWidth / 10;
-
     this.links = links;
     this.layout = layout;
     console.log(links);
