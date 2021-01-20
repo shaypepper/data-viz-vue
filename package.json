@@ -15,7 +15,7 @@
     "d3-brush": "^1.1.5",
     "d3-dsv": "^1.2.0",
     "debounce": "^1.2.0",
-    "gsap": "^3.2.6",
+    "gsap": "^3.6.0",
     "magic-scroll": "0.0.12",
     "node-sass": "^4.14.0",
     "sass-loader": "^8.0.2",
